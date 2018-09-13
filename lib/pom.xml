@@ -9,7 +9,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>lv.ctco.chess</groupId>
     <artifactId>lib</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>

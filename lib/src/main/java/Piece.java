@@ -1,34 +1,22 @@
-package main.java;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Piece {
-    String name;
-    int activeSquare;
+    protected int indexX;
+    protected int indexY;
+    private int boardSize;
+    protected Square[][] occupiedSquare;
 
-    public Piece(int activeSquare) {
-        this.activeSquare = activeSquare;
+    public int getIndexX() {
+        return indexX;
     }
 
-    public List<Integer> getPossibleMoves(int sizeBoard) {
-        List<Integer> possibleMoves = new ArrayList<Integer>();
-        return possibleMoves;
+    public int getIndexY() {
+        return indexY;
     }
 
-    public String getName() {
-        return name;
+    public int getBoardSize() {
+        return boardSize;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getActiveSquare() {
-        return activeSquare;
-    }
-
-    public void setActiveSquare(int activeSquare) {
-        this.activeSquare = activeSquare;
+    public Square[][] getOccupiedSquare() {
+        return occupiedSquare;
     }
 }

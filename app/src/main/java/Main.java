@@ -1,5 +1,3 @@
-package main.java;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -37,10 +35,68 @@ public class Main {
         return mapPieces;
     }
 
+    public static void printArray(Square[][] arr) {
+        for(int i = 0; i < arr.length; i++) {
+            for(int j = 0; j < arr[i].length; j++) {
+                System.out.println(i + "-" + j + ": " + arr[i][j].isState());
+            }
+        }
+    }
+
+    public static Square getFreeSquare(Square[][] arr) {
+        for(int i = 0; i < arr.length; i++) {
+            for(int j = 0; j < arr[i].length; j++) {
+                if (arr[i][j].isState()) {
+                    arr[i][j].setX(i);
+                    arr[i][j].setY(j);
+                    return arr[i][j];
+                }
+            }
+        }
+        return null;
+    }
+
+    public static String getPiece(Map<String, Integer> mapPieces) {
+        for (Map.Entry<String, Integer> entry : mapPieces.entrySet()) {
+            if (entry.getValue() > 0) {
+                entry.setValue(entry.getValue() - 1);
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public static Square[][] updateBoard(Board board, Piece piece, Square square) {
+        Square[][] pieceMoves = piece.getOccupiedSquare();
+        Square[][] boardSquares = board.getSquares();
+        int x = square.getX() - piece.indexX;
+        int y = square.getY() - piece.indexY;
+        for(int i = 0; i < pieceMoves.length; i++) {
+            for(int j = 0; j < pieceMoves[i].length; j++) {
+                if ((x + i >= 0) && (y + j >= 0)) {
+                    boardSquares[x + i][y + j].setState(pieceMoves[i][j].isState());
+                }
+            }
+        }
+        printArray(boardSquares);
+        return boardSquares;
+    }
+
     public static void main (String[] args) {
         int boardLength = getBoardSize();
+        Board board = new Board(boardLength);
+        Square freeSquare = getFreeSquare(board.getSquares());
         Map<String, Integer> mapPieces = getAllPieces();
-        System.out.println(boardLength);
-        System.out.println(mapPieces);
+        String pieceName = getPiece(mapPieces);
+        if (pieceName.equals("kings")) {
+            King king = new King();
+            updateBoard(board, king, freeSquare);
+        } else if (pieceName.equals("knights")) {
+            Knight knight = new Knight();
+            updateBoard(board, knight, freeSquare);
+        } else if (pieceName.equals("pawns")) {
+            Pawn pawn = new Pawn();
+            updateBoard(board, pawn, freeSquare);
+        }
     }
 }

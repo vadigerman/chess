@@ -1,7 +1,2 @@
-package main.java;
-
-public class Rook extends main.java.Piece {
-    public Rook(int activeSquare) {
-        super(activeSquare);
-    }
+public class Rook extends Piece {
 }

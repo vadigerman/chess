@@ -1,29 +1,27 @@
-package main.java;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board {
-    int size;
+    private Square[][] squares;
+    private int size;
 
     public Board(int size) {
         this.size = size;
+        squares = new Square[size][size];
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                squares[i][j] = new Square(true);
+            }
+        }
     }
 
     public int getSize() {
         return size;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public Square[][] getSquares() {
+        return squares;
     }
 
-    public List<Integer> getSquares() {
-        List<Integer> squares = new ArrayList<Integer>();
-        for (int i = 0; i < size*size; i++) {
-            squares.add(i + 1);
-        }
-        return squares;
+    public void setSquares(Square[][] squares) {
+        this.squares = squares;
     }
 }
 
