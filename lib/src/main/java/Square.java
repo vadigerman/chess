@@ -1,17 +1,17 @@
 public class Square {
-    protected boolean state;
-    protected int x;
-    protected int y;
+    private SquareState state;
+    private int x;
+    private int y;
 
-    public Square(boolean state) {
+    public Square(SquareState state) {
         this.state = state;
     }
 
-    public boolean isState() {
+    public SquareState getState() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setState(SquareState state) {
         this.state = state;
     }
 

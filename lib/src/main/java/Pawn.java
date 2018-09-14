@@ -7,11 +7,10 @@ public class Pawn extends Piece {
         occupiedSquare = new Square[n][m];
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < m; j++) {
-                occupiedSquare[i][j] = new Square(true);
+                occupiedSquare[i][j] = new Square(SquareState.EMPTY);
             }
         }
-        occupiedSquare[indexX][indexY].setState(false);
-        occupiedSquare[indexX - 1][indexY + 1].setState(false);
-        occupiedSquare[indexX + 1][indexY + 1].setState(false);
+        occupiedSquare[indexX - 1][indexY + 1].setState(SquareState.ATTACKED);
+        occupiedSquare[indexX + 1][indexY + 1].setState(SquareState.ATTACKED);
     }
 }

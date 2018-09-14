@@ -7,7 +7,7 @@ public class Board {
         squares = new Square[size][size];
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
-                squares[i][j] = new Square(true);
+                squares[i][j] = new Square(SquareState.EMPTY);
             }
         }
     }
