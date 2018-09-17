@@ -1,17 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Knight extends Piece {
     public Knight() {
-        indexX = 2;
-        indexY = 2;
-        int n = 5;
-        occupiedSquare = new Square[n][n];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                if ((Math.abs(indexX - i) + Math.abs(indexY - j)) == 3 || (i == indexX && j == indexY)) {
-                    occupiedSquare[i][j] = new Square(SquareState.ATTACKED);
-                } else {
-                    occupiedSquare[i][j] = new Square(SquareState.EMPTY);
+        setName("knight");
+    }
+
+    public static List<Cell> getOccupiedCells(int x, int y) {
+        List<Cell> cells = new ArrayList<Cell>();
+        for(int i = x - 2; i <= x + 2; i++) {
+            for (int j = y - 2; j <= y + 2; j++) {
+                if ((Math.abs(x - i) + Math.abs(y - j)) == 3) {
+                    cells.add(new Cell(i, j, CellState.ATTACKED));
+                } else if (i == x && j == y) {
+                    cells.add(new Cell(i, j, CellState.BUSY));
                 }
             }
         }
+        return cells;
     }
 }

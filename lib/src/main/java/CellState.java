@@ -1,4 +1,4 @@
-public enum SquareState {
+public enum CellState {
     EMPTY,
     ATTACKED,
     BUSY,

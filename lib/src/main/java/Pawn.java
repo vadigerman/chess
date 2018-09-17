@@ -1,16 +1,16 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Pawn extends Piece {
     public Pawn() {
-        indexX = 1;
-        indexY = 0;
-        int n = 3;
-        int m = 2;
-        occupiedSquare = new Square[n][m];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < m; j++) {
-                occupiedSquare[i][j] = new Square(SquareState.EMPTY);
-            }
-        }
-        occupiedSquare[indexX - 1][indexY + 1].setState(SquareState.ATTACKED);
-        occupiedSquare[indexX + 1][indexY + 1].setState(SquareState.ATTACKED);
+        setName("pawn");
+    }
+
+    public static List<Cell> getOccupiedCells(int x, int y) {
+        List<Cell> cells = new ArrayList<Cell>();
+        cells.add(new Cell(x, y, CellState.BUSY));
+        cells.add(new Cell(x - 1, y + 1, CellState.ATTACKED));
+        cells.add(new Cell(x + 1, y + 1, CellState.ATTACKED));
+        return cells;
     }
 }

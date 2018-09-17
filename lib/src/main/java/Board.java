@@ -1,27 +1,35 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Board {
-    private Square[][] squares;
+    private List<Cell> cells;
     private int size;
 
-    public Board(int size) {
-        this.size = size;
-        squares = new Square[size][size];
-        for(int i = 0; i < size; i++) {
-            for(int j = 0; j < size; j++) {
-                squares[i][j] = new Square(SquareState.EMPTY);
+    public Board(int n) {
+        this.size = n*n;
+        List<Cell> cellsList = new ArrayList<Cell>();
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                cellsList.add(new Cell(i, j, CellState.EMPTY));
             }
         }
+        this.cells = cellsList;
     }
 
     public int getSize() {
         return size;
     }
 
-    public Square[][] getSquares() {
-        return squares;
+    public void setSize(int size) {
+        this.size = size;
     }
 
-    public void setSquares(Square[][] squares) {
-        this.squares = squares;
+    public List<Cell> getCells() {
+        return cells;
+    }
+
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 }
 

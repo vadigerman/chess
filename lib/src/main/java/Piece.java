@@ -1,22 +1,19 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Piece {
-    protected int indexX;
-    protected int indexY;
-    private int boardSize;
-    protected Square[][] occupiedSquare;
+    String name;
 
-    public int getIndexX() {
-        return indexX;
+    public String getName() {
+        return name;
     }
 
-    public int getIndexY() {
-        return indexY;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public int getBoardSize() {
-        return boardSize;
-    }
-
-    public Square[][] getOccupiedSquare() {
-        return occupiedSquare;
+    public static List<Cell> getOccupiedCells(int x, int y, int n) {
+        List<Cell> cells = new ArrayList<Cell>();
+        return cells;
     }
 }

@@ -1,13 +1,22 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class King extends Piece {
-    public King(Square square) {
-        indexX = 1;
-        indexY = 1;
-        int n = 3;
-        occupiedSquare = new Square[n][n];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                occupiedSquare[i][j] = new Square(SquareState.ATTACKED);
+    public King() {
+        setName("king");
+    }
+
+    public static List<Cell> getOccupiedCells(int x, int y) {
+        List<Cell> cells = new ArrayList<Cell>();
+        for(int i = x - 1; i <= x + 1; i++) {
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (i == x && j == y) {
+                    cells.add(new Cell(i, j, CellState.BUSY));
+                } else {
+                    cells.add(new Cell(i, j, CellState.ATTACKED));
+                }
             }
         }
+        return cells;
     }
 }

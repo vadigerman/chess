@@ -1,17 +1,19 @@
-public class Square {
-    private SquareState state;
+public class Cell {
+    private CellState state;
     private int x;
     private int y;
 
-    public Square(SquareState state) {
+    public Cell(int x, int y, CellState state) {
         this.state = state;
+        this.x = x;
+        this.y = y;
     }
 
-    public SquareState getState() {
+    public CellState getState() {
         return state;
     }
 
-    public void setState(SquareState state) {
+    public void setState(CellState state) {
         this.state = state;
     }
 

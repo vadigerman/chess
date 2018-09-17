@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -25,19 +27,23 @@ public class Main {
         return countPiece;
     }
 
-    public static Map<String, Integer> getAllPieces () {
-        Map<String, Integer> mapPieces = new HashMap<String, Integer>();
+    public static List<String> getAllPieces () {
+        List<String> piecesArr = new ArrayList<String>();
         System.out.println("enter pieces");
-        String[] pieces = {"kings", "queens", "rooks", "bishops", "knights", "pawns"};
+        String[] pieces = {"king", "queen", "rook", "bishop", "knight", "pawn"};
         for (String piece : pieces) {
-            mapPieces.put(piece, getCountOnePiece(piece));
+            int n = getCountOnePiece(piece);
+            while (n > 0) {
+                piecesArr.add(piece);
+                n--;
+            }
         }
-        return mapPieces;
+        return piecesArr;
     }
 
     public static void main (String[] args) {
         int boardLength = getBoardSize();
-        Map<String, Integer> mapPieces = getAllPieces();
-        Api.main(boardLength, mapPieces);
+        List<String> listPieces = getAllPieces();
+        Api.main(boardLength, listPieces);
     }
 }
