@@ -6,7 +6,7 @@ public class King extends Piece {
         setName("king");
     }
 
-    public static List<Cell> getOccupiedCells(int x, int y) {
+    public List<Cell> getOccupiedCells(int x, int y, int n) {
         List<Cell> cells = new ArrayList<Cell>();
         for(int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {

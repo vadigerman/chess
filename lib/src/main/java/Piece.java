@@ -12,7 +12,7 @@ public class Piece {
         this.name = name;
     }
 
-    public static List<Cell> getOccupiedCells(int x, int y, int n) {
+    public List<Cell> getOccupiedCells(int x, int y, int n) {
         List<Cell> cells = new ArrayList<Cell>();
         return cells;
     }

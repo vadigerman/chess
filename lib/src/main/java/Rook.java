@@ -6,7 +6,7 @@ public class Rook extends Piece {
         setName("rook");
     }
 
-    public static List<Cell> getOccupiedCells(int x, int y, int n) {
+    public List<Cell> getOccupiedCells(int x, int y, int n) {
         List<Cell> cells = new ArrayList<Cell>();
         for(int i = 0; i < y; i++) {
             cells.add(new Cell(x, i, CellState.ATTACKED));

@@ -6,7 +6,7 @@ public class Queen extends Piece {
         setName("queen");
     }
 
-    public static List<Cell> getOccupiedCells(int x, int y, int n) {
+    public List<Cell> getOccupiedCells(int x, int y, int n) {
         List<Cell> cells = new ArrayList<Cell>();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {

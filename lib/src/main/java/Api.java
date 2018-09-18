@@ -1,138 +1,139 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class Api {
-//    public static void printArray(Cell[][] arr) {
-//        for(int i = 0; i < arr.length; i++) {
-//            for(int j = 0; j < arr[i].length; j++) {
-//                System.out.println(i + "-" + j + ": " + arr[i][j].getState());
-//            }
-//        }
-//    }
-
-//    public static Cell getFreeSquare(Board board) {
-//        Cell[][] arr = board.getCells();
-//        for(int i = 0; i < arr.length; i++) {
-//            for(int j = 0; j < arr[i].length; j++) {
-//                if (arr[i][j].getState() == CellState.EMPTY) {
-//                    arr[i][j].setX(i);
-//                    arr[i][j].setY(j);
-//                    System.out.println(i + "-" + j);
-//                    return arr[i][j];
-//                }
-//            }
-//        }
-//        return null;
-//    }
-
-//    public static void updateSquareStatus(Board board) {
-//        Cell[][] arr = board.getCells();
-//        for(int i = 0; i < arr.length; i++) {
-//            for(int j = 0; j < arr[i].length; j++) {
-//                if (arr[i][j].getState() == CellState.TEMPORARY) {
-//                    arr[i][j].setState(CellState.EMPTY);
-//                }
-//            }
-//        }
-//    }
-
-//    public static void checkStateSquare(Board board, Piece piece, Cell cell) {
-//        Cell[][] pieceMoves = piece.getOccupiedCell();
-//        Cell[][] boardCells = board.getCells();
-//        int x = cell.getX() - piece.indexX;
-//        int y = cell.getY() - piece.indexY;
-//        for(int i = 0; i < pieceMoves.length; i++) {
-//            for(int j = 0; j < pieceMoves[i].length; j++) {
-//                if ((x + i >= 0)
-//                        && (y + j >= 0)
-//                        && (x + i < board.getSize())
-//                        && (y + j < board.getSize())
-//                        && (boardCells[x + i][y + j].getState() == CellState.BUSY)
-//                        && (pieceMoves[i][j].getState() == CellState.ATTACKED)) {
-//                    cell.setState(CellState.TEMPORARY);
-//                    checkStateSquare(board, piece, getFreeSquare(board));
-//                }
-//            }
-//        }
-//    }
-
-//    public static String getPiece(Map<String, Integer> mapPieces) {
-//        for (Map.Entry<String, Integer> entry : mapPieces.entrySet()) {
-//            if (entry.getValue() > 0) {
-//                entry.setValue(entry.getValue() - 1);
-//                System.out.println(entry.getKey());
-//                return entry.getKey();
-//            }
-//        }
-//        return null;
-//    }
-
-//    public static Cell[][] updateBoard(Board board, Piece piece, Cell cell) {
-//        checkStateSquare(board, piece, cell);
-//        Cell[][] pieceMoves = piece.getOccupiedCell();
-//        Cell[][] boardCells = board.getCells();
-//        int x = cell.getX() - piece.indexX;
-//        int y = cell.getY() - piece.indexY;
-//        for(int i = 0; i < pieceMoves.length; i++) {
-//            for(int j = 0; j < pieceMoves[i].length; j++) {
-//                if ((pieceMoves[i][j].getState() != CellState.EMPTY)
-//                        && (x + i >= 0)
-//                        && (y + j >= 0)
-//                        && (x + i < board.getSize())
-//                        && (y + j < board.getSize())
-//                        && (boardCells[x + i][y + j].getState() == CellState.EMPTY)) {
-//                    boardCells[x + i][y + j].setState(pieceMoves[i][j].getState());
-//                }
-//            }
-//        }
-//        printArray(boardCells);
-//        return boardCells;
-//    }
-
-//    public static Piece selectPiece(String pieceName, int boardLength, Cell freeCell) {
-//        Piece piece = new Piece();
-//        if (pieceName.equals("kings")) {
-//            piece = new King();
-//        } else if (pieceName.equals("knights")) {
-//            piece = new Knight();
-//        } else if (pieceName.equals("pawns")) {
-//            piece = new Pawn();
-//        } else if (pieceName.equals("rooks")) {
-//            piece = new Rook(boardLength, freeCell);
-//        } else if (pieceName.equals("bishops")) {
-//            piece = new Bishop(boardLength, freeCell);
-//        } else if (pieceName.equals("queens")) {
-//            piece = new Queen(boardLength, freeCell);
-//        }
-//        return piece;
-//    }
-
     public static void printArrayList(List<String> arrList) {
-        for (int i = 0; i < arrList.size(); i++) {
-            System.out.println(arrList.get(i));
+        for (String item : arrList) {
+            System.out.println(item);
         }
     }
 
     public static void printBoard(Board board) {
         List<Cell> cells = board.getCells();
-        for (int i = 0; i < cells.size(); i++) {
-            System.out.println(cells.get(i).getX() + "-" + cells.get(i).getY() + ": " + cells.get(i).getState());
+        for (Cell cell : cells) {
+            System.out.println(cell.getX() + "-" + cell.getY() + ": " + cell.getState());
+        }
+    }
+
+    public static Piece selectPiece(String pieceName) {
+        Piece piece = new Piece();
+        if (pieceName.equals("king")) {
+            piece = new King();
+        } else if (pieceName.equals("knight")) {
+            piece = new Knight();
+        } else if (pieceName.equals("pawn")) {
+            piece = new Pawn();
+        } else if (pieceName.equals("rook")) {
+            piece = new Rook();
+        } else if (pieceName.equals("bishop")) {
+            piece = new Bishop();
+        } else if (pieceName.equals("queen")) {
+            piece = new Queen();
+        }
+        return piece;
+    }
+
+    public static Cell getFreeCell(Board board) {
+        List<Cell> cells = board.getCells();
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.EMPTY) {
+                cell.setState(CellState.CHECKED);
+                System.out.println("select cell: " + cell.getX() + "-" + cell.getY());
+                return cell;
+            }
+        }
+        System.out.println("lose");
+        return new Cell(-1, -1, CellState.INCOMPLETED);
+    }
+
+    public static void updateBoard(Board board) {
+        List<Cell> cells = board.getCells();
+        int i = 0;
+        while (cells.get(i).getState() != CellState.CHECKED) {
+            i++;
+        }
+        cells.get(i).setState(CellState.ATTACKED);
+    }
+
+    public static String getPiece(List<String> pieces) {
+        if (pieces.size() > 0) {
+            String piece = pieces.get(0);
+            pieces.remove(0);
+            System.out.println("select piece: " + piece);
+            return piece;
+        }
+        return "no pieces";
+    }
+
+    public static boolean checkStateCell(Board board, Piece piece, Cell cell) {
+        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
+        for (Cell occupiedCell : occupiedCells) {
+            for (Cell boardCell : board.getCells()) {
+                if (occupiedCell.getX() == boardCell.getX()
+                        && occupiedCell.getY() == boardCell.getY()
+                        && boardCell.getState() == CellState.BUSY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static void putPiece(Board board, Piece piece, Cell cell) {
+        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
+        for (Cell occupiedCell : occupiedCells) {
+            for (Cell boardCell : board.getCells()) {
+                if (occupiedCell.getX() == boardCell.getX() && occupiedCell.getY() == boardCell.getY()) {
+                    if (boardCell.getState() == CellState.EMPTY) {
+                        boardCell.setState(occupiedCell.getState());
+                    } else if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
+                        boardCell.setState(occupiedCell.getState());
+                    }
+                }
+            }
         }
     }
 
     public static void main(int boardLength, List<String> listPieces) {
+        Stack<String> stackPieces = new Stack<String>();
+        String currentPiece;
         Board board = new Board(boardLength);
         printArrayList(listPieces);
-        printBoard(board);
-
-//        String pieceName = getPiece(listPieces);
-//        Cell freeCell = getFreeSquare(board);
-//        while ((freeCell != null) && (pieceName != null)) {
-//            updateBoard(board, selectPiece(pieceName, boardLength, freeCell), freeCell);
-//            pieceName = getPiece(listPieces);
-//            updateSquareStatus(board);
-//            freeCell = getFreeSquare(board);
-//        }
+        List<String> uncheckPieces = new ArrayList<String>();
+        Cell freeCell = getFreeCell(board);
+        while (freeCell.getState() != CellState.COMPLETED && freeCell.getState() != CellState.INCOMPLETED) {
+            boolean handler = true;
+            while (listPieces.size() > 0 && handler) {
+                currentPiece = getPiece(listPieces);
+                Piece piece = selectPiece(currentPiece);
+                if (checkStateCell(board, piece, freeCell)) {
+                    putPiece(board, piece, freeCell);
+                    stackPieces.push(currentPiece);
+                    handler = false;
+                } else {
+                    uncheckPieces.add(currentPiece);
+                }
+            }
+            if (handler) {
+                updateBoard(board);
+            } else {
+                listPieces.addAll(uncheckPieces);
+                uncheckPieces.clear();
+            }
+            printBoard(board);
+            freeCell = getFreeCell(board);
+            if (listPieces.size() == 0 && !handler) {
+                freeCell.setState(CellState.COMPLETED);
+            } else {
+                listPieces.addAll(uncheckPieces);
+                uncheckPieces.clear();
+            }
+        }
+        if (freeCell.getState() == CellState.COMPLETED) {
+            System.out.println("win");
+            System.out.println(stackPieces);
+        }
     }
 }
