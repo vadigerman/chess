@@ -31,6 +31,29 @@ public class Board {
     public void setCells(List<Cell> cells) {
         this.cells = cells;
     }
+
+    public Cell getFreeCell() {
+        List<Cell> cells = getCells();
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.EMPTY) {
+                cell.setState(CellState.CHECKED);
+//                System.out.println("select cell: " + cell.getX() + "-" + cell.getY());
+                return cell;
+            }
+        }
+//        System.out.println("lose");
+        return new Cell(-1, -1, CellState.INCOMPLETED);
+    }
+
+    public boolean isFreeCell() {
+        List<Cell> cells = getCells();
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.EMPTY) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 

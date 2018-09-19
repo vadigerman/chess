@@ -4,5 +4,6 @@ public enum CellState {
     BUSY,
     CHECKED,
     COMPLETED,
-    INCOMPLETED
+    INCOMPLETED,
+    USED
 }
