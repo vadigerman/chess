@@ -32,7 +32,7 @@ public class BoardCalculator {
         }
     }
 
-    public long recurs(Board board, ConfigBoard configBoard) {
+    public Board recurs(Board board, ConfigBoard configBoard) {
         if (board.isFreeCell()) {
             Cell cell = board.getFreeCell();
             Piece currentPiece = configBoard.getPiece();
@@ -40,17 +40,17 @@ public class BoardCalculator {
                 putPiece(board, currentPiece, cell);
                 if (configBoard.getListPieces().size() > 0) {
                     return recurs(board, configBoard);
+                } else {
+
                 }
             }
         }
-        return countCombinations;
+        return board;
     }
 
-    public long calculateCombinations(ConfigBoard config) {
+    public void calculateCombinations(ConfigBoard config) {
         Board board = new Board(config.getSizeBoard());
-        countCombinations++;
-        if (config.getListPieces().size() > 0) {
-        }
-        return countCombinations;
+        recurs(board, config);
+        board.printBoard();
     }
 }

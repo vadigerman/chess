@@ -41,27 +41,26 @@ public class Main {
         return piecesArr;
     }
 
-    public static Board recurs(Board board) {
-        if (board.isFreeCell()) {
-            Cell cell = board.getFreeCell();
-            return recurs(board);
-        } else {
-            return board;
-        }
-    }
+//    public static Board recurs(Board board, ConfigBoard config) {
+//        if (board.isFreeCell()) {
+//            Cell cell = board.getFreeCell();
+//            Piece piece = config.getPiece();
+//
+//            return recurs(board, config);
+//        } else {
+//            return board;
+//        }
+//    }
 
     public static void main (String[] args) {
         int boardLength = getBoardSize();
-//        List<String> listPieces = getAllPieces();
+        List<String> listPieces = getAllPieces();
 //        BoardCalculator boardCalculator = new BoardCalculator();
 //        long n = boardCalculator.calculateCombinations(new ConfigBoard(boardLength, listPieces));
 //        PriorityQueue<String> pieces = new PriorityQueue<String>();
 //        Stack<String> stack = new Stack<String>();
-        Board board = new Board(boardLength);
-        Api.printBoard(recurs(board));
-
-
-//        pieces.addAll(listPieces);
-//        System.out.println(pieces);
+        ConfigBoard configBoard = new ConfigBoard(boardLength, listPieces);
+        BoardCalculator calculator = new BoardCalculator();
+        calculator.calculateCombinations(configBoard);
     }
 }

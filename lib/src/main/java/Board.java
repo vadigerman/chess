@@ -41,7 +41,6 @@ public class Board {
                 return cell;
             }
         }
-//        System.out.println("lose");
         return new Cell(-1, -1, CellState.INCOMPLETED);
     }
 
@@ -53,6 +52,22 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public void printBoard() {
+        List<Cell> cells = getCells();
+        for (Cell cell : cells) {
+            System.out.println(cell.getX() + "-" + cell.getY() + ": " + cell.getState());
+        }
+    }
+
+    public void updateBoard(Cell currentCell) {
+        List<Cell> cells = getCells();
+        for (Cell cell : cells) {
+            if (currentCell.getX() == cell.getX() && currentCell.getY() == cell.getY()) {
+                cell.setState(CellState.USED);
+            }
+        }
     }
 }
 

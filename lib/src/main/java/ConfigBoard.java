@@ -18,7 +18,9 @@ public class ConfigBoard {
     }
 
     public String getPieceName() {
-        return listPieces.get(0);
+        String piece = listPieces.get(0);
+        listPieces.remove(0);
+        return piece;
     }
 
     public List<String> getListPieces() {
