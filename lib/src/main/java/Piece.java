@@ -3,9 +3,18 @@ import java.util.List;
 
 public class Piece {
     String name;
+    List<Cell> boardOccupiedCells;
 
     public String getName() {
         return name;
+    }
+
+    public List<Cell> getBoardOccupiedCells() {
+        return boardOccupiedCells;
+    }
+
+    public void setBoardOccupiedCells(List<Cell> boardOccupiedCells) {
+        this.boardOccupiedCells = boardOccupiedCells;
     }
 
     public void setName(String name) {

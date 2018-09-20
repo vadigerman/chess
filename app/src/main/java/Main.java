@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Main {
+
     public static int getBoardSize () {
         Scanner sc = new Scanner(System.in);
         System.out.println("enter count chessboard's rows/columns (count rows = count columns): ");
@@ -41,24 +42,21 @@ public class Main {
         return piecesArr;
     }
 
-//    public static Board recurs(Board board, ConfigBoard config) {
+//    public static Board calculateVariables(Board board, ConfigBoard config) {
 //        if (board.isFreeCell()) {
 //            Cell cell = board.getFreeCell();
 //            Piece piece = config.getPiece();
 //
-//            return recurs(board, config);
+//            return calculateVariables(board, config);
 //        } else {
 //            return board;
 //        }
 //    }
 
+
     public static void main (String[] args) {
         int boardLength = getBoardSize();
         List<String> listPieces = getAllPieces();
-//        BoardCalculator boardCalculator = new BoardCalculator();
-//        long n = boardCalculator.calculateCombinations(new ConfigBoard(boardLength, listPieces));
-//        PriorityQueue<String> pieces = new PriorityQueue<String>();
-//        Stack<String> stack = new Stack<String>();
         ConfigBoard configBoard = new ConfigBoard(boardLength, listPieces);
         BoardCalculator calculator = new BoardCalculator();
         calculator.calculateCombinations(configBoard);

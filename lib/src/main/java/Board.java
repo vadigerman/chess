@@ -69,6 +69,15 @@ public class Board {
             }
         }
     }
+
+    public void returnBoardLastState() {
+        List<Cell> cells = getCells();
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.USED || cell.getState() == CellState.CHECKED) {
+                cell.setState(CellState.EMPTY);
+            }
+        }
+    }
 }
 
 

@@ -1,8 +1,10 @@
 import java.util.List;
+import java.util.Stack;
 
 public class ConfigBoard {
     int sizeBoard;
     List<String> listPieces;
+    Stack<String> stackPieces = new Stack<String>();
 
     public ConfigBoard(int sizeBoard, List<String> listPieces) {
         this.sizeBoard = sizeBoard;
@@ -17,10 +19,13 @@ public class ConfigBoard {
         this.sizeBoard = sizeBoard;
     }
 
-    public String getPieceName() {
-        String piece = listPieces.get(0);
+    public String getNameNextPiece() {
+        return listPieces.get(0);
+    }
+
+    public void updateListPieces() {
+        stackPieces.push(listPieces.get(0));
         listPieces.remove(0);
-        return piece;
     }
 
     public List<String> getListPieces() {
@@ -32,7 +37,7 @@ public class ConfigBoard {
     }
 
     public Piece getPiece() {
-        String pieceName = getPieceName();
+        String pieceName = getNameNextPiece();
         Piece piece = new Piece();
         if (pieceName.equals("king")) {
             piece = new King();
