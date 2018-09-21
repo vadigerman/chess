@@ -6,7 +6,7 @@ public class Board {
     private int size;
 
     public Board(int n) {
-        this.size = n*n;
+        this.size = n;
         List<Cell> cellsList = new ArrayList<Cell>();
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {

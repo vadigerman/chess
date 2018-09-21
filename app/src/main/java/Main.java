@@ -53,7 +53,6 @@ public class Main {
 //        }
 //    }
 
-
     public static void main (String[] args) {
         int boardLength = getBoardSize();
         List<String> listPieces = getAllPieces();

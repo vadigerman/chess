@@ -4,6 +4,7 @@ import java.util.List;
 public class King extends Piece {
     public King() {
         setName("king");
+        setOnBoard(false);
     }
 
     public List<Cell> getOccupiedCells(int x, int y, int n) {
