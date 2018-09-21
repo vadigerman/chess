@@ -37,6 +37,21 @@ public class BoardCalculator {
         piece.setBoardOccupiedCells(boardOccupiedCells);
     }
 
+    public void removePiece(Board board, Piece piece) {
+        List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
+        for (Cell occupiedCell : boardOccupiedCells) {
+            for (Cell boardCell : board.getCells()) {
+                if (occupiedCell.getX() == boardCell.getX() && occupiedCell.getY() == boardCell.getY()) {
+                    if (occupiedCell.getState() == CellState.ATTACKED) {
+                        boardCell.setState(CellState.EMPTY);
+                    } else if (occupiedCell.getState() == CellState.BUSY) {
+                        boardCell.setState(CellState.USED);
+                    }
+                }
+            }
+        }
+    }
+
     public void calculateVariables(Board board, ConfigBoard configBoard) {
         if (board.isFreeCell()) {
             Cell cell = board.getFreeCell();
@@ -55,7 +70,7 @@ public class BoardCalculator {
                 calculateVariables(board, configBoard);
             }
         } else {
-
+            board.returnBoardLastState();
         }
     }
 

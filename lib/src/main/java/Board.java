@@ -41,7 +41,7 @@ public class Board {
                 return cell;
             }
         }
-        return new Cell(-1, -1, CellState.INCOMPLETED);
+        return new Cell(-1, -1, CellState.CHECKED);
     }
 
     public boolean isFreeCell() {
