@@ -90,6 +90,6 @@ public class BoardCalculator {
     public void calculateCombinations(ConfigBoard config) {
         Board board = new Board(config.getSizeBoard());
         calculateVariables(board, config);
-        System.out.println(countCombinations);
+        System.out.println(countCombinations / config.getRepetitiveCombinations());
     }
 }

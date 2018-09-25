@@ -6,12 +6,30 @@ public class ConfigBoard {
     int sizeBoard;
     List<Piece> listPieces = new ArrayList<Piece>();
     Stack<Piece> stackPieces = new Stack<Piece>();
+    int repetitiveCombinations = 1;
 
     public ConfigBoard(int sizeBoard, List<String> pieces) {
         this.sizeBoard = sizeBoard;
+        String currentPiece = "";
+        int multiplier = 1;
         for (String piece : pieces) {
             listPieces.add(convertStringToPiece(piece));
+            if (currentPiece.equals(piece)) {
+                repetitiveCombinations = repetitiveCombinations * multiplier;
+                multiplier++;
+            } else {
+                multiplier = 2;
+            }
+            currentPiece = piece;
         }
+    }
+
+    public int getRepetitiveCombinations() {
+        return repetitiveCombinations;
+    }
+
+    public void setRepetitiveCombinations(int repetitiveCombinations) {
+        this.repetitiveCombinations = repetitiveCombinations;
     }
 
     public List<Piece> getListPieces() {

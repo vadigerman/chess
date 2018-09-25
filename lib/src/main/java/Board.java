@@ -37,8 +37,20 @@ public class Board {
         for (Cell cell : cells) {
             if (cell.getState() == CellState.EMPTY) {
                 cell.setState(CellState.CHECKED);
-//                System.out.println("select cell: " + cell.getX() + "-" + cell.getY());
                 return cell;
+            }
+        }
+        return new Cell(-1, -1, CellState.CHECKED);
+    }
+
+    public Cell getCellForFirstPiece() {
+        List<Cell> cells = getCells();
+        if (getSize() % 2 == 1) {
+            for (int i = 0; i < getSize()/2; i++) {
+                if (cells.get(i).getState() == CellState.EMPTY) {
+                    cells.get(i).setState(CellState.CHECKED);
+                    return cells.get(i);
+                }
             }
         }
         return new Cell(-1, -1, CellState.CHECKED);
