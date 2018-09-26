@@ -52,22 +52,29 @@ public class BoardCalculator {
         for (Cell occupiedCell : boardOccupiedCells) {
             for (Cell boardCell : board.getCells()) {
                 if (occupiedCell.getX() == boardCell.getX() && occupiedCell.getY() == boardCell.getY()) {
-                    boardCell.setState(CellState.EMPTY);
-                    piece.setOnBoard(false);
+                    if (occupiedCell.getState() == CellState.BUSY) {
+                        boardCell.setState(CellState.CHECKED);
+                    } else {
+                        boardCell.setState(CellState.EMPTY);
+                    }
                 }
             }
         }
+        piece.setOnBoard(false);
     }
 
     public void calculateVariables(Board board, ConfigBoard configBoard) {
         if (board.isFreeCell()) {
-            Cell cell = board.getFreeCell();
             Piece currentPiece = configBoard.getPiece();
+            if (currentPiece.getClosedCells() != null) {
+                board.addCheckCells(currentPiece.getClosedCells());
+            }
+            Cell cell = board.getFreeCell();
             if (checkCellState(board, currentPiece, cell)) {
                 if (configBoard.getListPieces().size() > 1) {
                     putPiece(board, currentPiece, cell);
                     configBoard.pushPiece();
-                    board.returnBoardLastState();
+//                    board.returnBoardLastState();
                     calculateVariables(board, configBoard);
                 } else {
                     countCombinations++;
@@ -90,6 +97,6 @@ public class BoardCalculator {
     public void calculateCombinations(ConfigBoard config) {
         Board board = new Board(config.getSizeBoard());
         calculateVariables(board, config);
-        System.out.println(countCombinations / config.getRepetitiveCombinations());
+        System.out.println(countCombinations);
     }
 }

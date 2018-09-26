@@ -90,6 +90,17 @@ public class Board {
             }
         }
     }
+
+    public void addCheckCells(List<Cell> checkCells) {
+        List<Cell> cells = getCells();
+        for (Cell checkCell : checkCells) {
+            for (Cell cell : cells) {
+                if (checkCell.getX() == cell.getX() && checkCell.getY() == cell.getY() && cell.getState() == CellState.EMPTY) {
+                    cell.setState(CellState.CHECKED);
+                }
+            }
+        }
+    }
 }
 
 
