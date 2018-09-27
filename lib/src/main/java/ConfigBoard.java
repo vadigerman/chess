@@ -5,6 +5,7 @@ import java.util.Stack;
 public class ConfigBoard {
     int sizeBoard;
     List<Piece> listPieces = new ArrayList<Piece>();
+    List<Piece> recursionListPieces = new ArrayList<Piece>();
     Stack<Piece> stackPieces = new Stack<Piece>();
     int repetitiveCombinations = 1;
 
@@ -55,6 +56,14 @@ public class ConfigBoard {
     public void setSizeBoard(int sizeBoard) {
         this.sizeBoard = sizeBoard;
     }
+
+//    public List<Piece> getRecursionListPieces() {
+//        int listSize = getListPieces().size();
+//        recursionListPieces = getListPieces();
+//        if (recursionListPieces.get(listSize) != recursionListPieces.get(listSize - 1)) {
+//
+//        }
+//    }
 
     public void pushPiece() {
         stackPieces.push(listPieces.get(0));

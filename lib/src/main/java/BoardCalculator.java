@@ -63,18 +63,29 @@ public class BoardCalculator {
         piece.setOnBoard(false);
     }
 
-    public void calculateVariables(Board board, ConfigBoard configBoard) {
-        if (board.isFreeCell()) {
-            Piece currentPiece = configBoard.getPiece();
-            if (currentPiece.getClosedCells() != null) {
-                board.addCheckCells(currentPiece.getClosedCells());
+    public void returnLastState(Piece piece, Board board) {
+        List<Cell> closedCells = piece.getClosedCells();
+        for (Cell closedCell : closedCells) {
+            for (Cell boardCell : board.getCells()) {
+                if (closedCell.getX() == boardCell.getX() && closedCell.getY() == boardCell.getY()) {
+                    boardCell.setState(CellState.EMPTY);
+                }
             }
+        }
+    }
+
+    public void calculateVariables(Board board, ConfigBoard configBoard) {
+        Piece currentPiece = configBoard.getPiece();
+        if (currentPiece.getClosedCells() != null) {
+            board.addCheckCells(currentPiece.getClosedCells(), CellState.CHECKED);
+        }
+        if (board.isFreeCell()) {
             Cell cell = board.getFreeCell();
             if (checkCellState(board, currentPiece, cell)) {
                 if (configBoard.getListPieces().size() > 1) {
                     putPiece(board, currentPiece, cell);
                     configBoard.pushPiece();
-//                    board.returnBoardLastState();
+                    board.addCheckCells(currentPiece.getClosedCells(), CellState.ATTACKED);
                     calculateVariables(board, configBoard);
                 } else {
                     countCombinations++;
@@ -91,6 +102,9 @@ public class BoardCalculator {
             }
         } else {
             board.returnBoardLastState();
+            if (currentPiece.getClosedCells() != null) {
+                returnLastState(currentPiece, board);
+            }
         }
     }
 

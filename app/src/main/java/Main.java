@@ -28,7 +28,7 @@ public class Main {
     public static List<String> getAllPieces () {
         List<String> piecesArr = new ArrayList<String>();
         System.out.println("enter listPieces");
-        String[] pieces = {"queen", "rook", "bishop", "king", "knight", "pawn"};
+        String[] pieces = {"queen", "rook", "bishop", "knight", "king", "pawn"};
         for (String piece : pieces) {
             int n = getCountOnePiece(piece);
             while (n > 0) {

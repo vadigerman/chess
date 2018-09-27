@@ -91,12 +91,22 @@ public class Board {
         }
     }
 
-    public void addCheckCells(List<Cell> checkCells) {
-        List<Cell> cells = getCells();
-        for (Cell checkCell : checkCells) {
-            for (Cell cell : cells) {
-                if (checkCell.getX() == cell.getX() && checkCell.getY() == cell.getY() && cell.getState() == CellState.EMPTY) {
-                    cell.setState(CellState.CHECKED);
+//    public void boardNextState() {
+//        List<Cell> cells = getCells();
+//        for (Cell cell : cells) {
+//            if (cell.getState() == CellState.CHECKED) {
+//                cell.setState(CellState.ATTACKED);
+//            }
+//        }
+//    }
+
+    public void addCheckCells(List<Cell> cells, CellState cellState) {
+        List<Cell> boardCells = getCells();
+        for (Cell checkCell : cells) {
+            for (Cell boardCell : boardCells) {
+                if (checkCell.getX() == boardCell.getX() && checkCell.getY() == boardCell.getY() &&
+                        (boardCell.getState() == CellState.EMPTY || boardCell.getState() == CellState.CHECKED)) {
+                    boardCell.setState(cellState);
                 }
             }
         }
