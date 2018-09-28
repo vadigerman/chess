@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
@@ -7,30 +8,12 @@ public class ConfigBoard {
     List<Piece> listPieces = new ArrayList<Piece>();
     List<Piece> recursionListPieces = new ArrayList<Piece>();
     Stack<Piece> stackPieces = new Stack<Piece>();
-    int repetitiveCombinations = 1;
 
     public ConfigBoard(int sizeBoard, List<String> pieces) {
         this.sizeBoard = sizeBoard;
-        String currentPiece = "";
-        int multiplier = 1;
         for (String piece : pieces) {
             listPieces.add(convertStringToPiece(piece));
-            if (currentPiece.equals(piece)) {
-                repetitiveCombinations = repetitiveCombinations * multiplier;
-                multiplier++;
-            } else {
-                multiplier = 2;
-            }
-            currentPiece = piece;
         }
-    }
-
-    public int getRepetitiveCombinations() {
-        return repetitiveCombinations;
-    }
-
-    public void setRepetitiveCombinations(int repetitiveCombinations) {
-        this.repetitiveCombinations = repetitiveCombinations;
     }
 
     public List<Piece> getListPieces() {
@@ -57,13 +40,21 @@ public class ConfigBoard {
         this.sizeBoard = sizeBoard;
     }
 
-//    public List<Piece> getRecursionListPieces() {
-//        int listSize = getListPieces().size();
-//        recursionListPieces = getListPieces();
-//        if (recursionListPieces.get(listSize) != recursionListPieces.get(listSize - 1)) {
-//
-//        }
-//    }
+    public void getRecursionListPieces() {
+        recursionListPieces = getListPieces();
+        int index = recursionListPieces.size() - 2;
+        Collections.swap(recursionListPieces, index + 1, index);
+        while (recursionListPieces != getListPieces()) {
+            while (index > 0) {
+                if (!recursionListPieces.get(index).getName().equals(recursionListPieces.get(index - 1).getName())) {
+                    Collections.swap(recursionListPieces, index, index - 1);
+
+                }
+                index--;
+            }
+            index = recursionListPieces.size() - 1;
+        }
+    }
 
     public void pushPiece() {
         stackPieces.push(listPieces.get(0));

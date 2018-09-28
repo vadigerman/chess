@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class BoardCalculator {
@@ -108,9 +109,10 @@ public class BoardCalculator {
         }
     }
 
-    public void calculateCombinations(ConfigBoard config) {
+    public long recursionListPieces(int sizeBoard, List<String> pieces) {
+        ConfigBoard config = new ConfigBoard(sizeBoard, pieces);
         Board board = new Board(config.getSizeBoard());
         calculateVariables(board, config);
-        System.out.println(countCombinations);
+        return countCombinations;
     }
 }

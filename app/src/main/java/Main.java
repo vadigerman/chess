@@ -42,8 +42,7 @@ public class Main {
     public static void main (String[] args) {
         int boardLength = getBoardSize();
         List<String> listPieces = getAllPieces();
-        ConfigBoard configBoard = new ConfigBoard(boardLength, listPieces);
         BoardCalculator calculator = new BoardCalculator();
-        calculator.calculateCombinations(configBoard);
+        System.out.println(calculator.recursionListPieces(boardLength, listPieces));
     }
 }
