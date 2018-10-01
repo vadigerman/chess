@@ -42,8 +42,10 @@ public class Main {
     public static void main (String[] args) {
         int boardLength = getBoardSize();
         List<String> listPieces = getAllPieces();
-        ConfigBoard configBoard = new ConfigBoard(boardLength, listPieces);
+        long startTime = System.nanoTime();
         BoardCalculator calculator = new BoardCalculator();
-        calculator.calculateCombinations(configBoard);
+        System.out.println(calculator.calculateCombinations(boardLength, listPieces));
+        long endTime = System.nanoTime();
+        System.out.println((endTime - startTime) / 1000000);
     }
 }

@@ -15,12 +15,9 @@ public class BoardCalculator {
         }
         List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
         for (Cell occupiedCell : occupiedCells) {
-            for (Cell boardCell : board.getCells()) {
-                if (occupiedCell.getX() == boardCell.getX()
-                        && occupiedCell.getY() == boardCell.getY()
-                        && boardCell.getState() == CellState.BUSY) {
-                    return false;
-                }
+            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+            if (board.getCells().get(index).getState() == CellState.BUSY) {
+                return false;
             }
         }
         return true;
@@ -30,17 +27,15 @@ public class BoardCalculator {
         List<Cell> boardOccupiedCells = new ArrayList<Cell>();
         List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
         for (Cell occupiedCell : occupiedCells) {
-            for (Cell boardCell : board.getCells()) {
-                if (occupiedCell.getX() == boardCell.getX() && occupiedCell.getY() == boardCell.getY()) {
-                    if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
-                        boardCell.setState(occupiedCell.getState());
-                        boardOccupiedCells.add(boardCell);
-                        piece.addClosedCell(boardCell);
-                    } else if (boardCell.getState() == CellState.EMPTY || boardCell.getState() == CellState.CHECKED) {
-                        boardCell.setState(occupiedCell.getState());
-                        boardOccupiedCells.add(boardCell);
-                    }
-                }
+            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+            Cell boardCell = board.getCells().get(index);
+            if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
+                boardCell.setState(occupiedCell.getState());
+                boardOccupiedCells.add(boardCell);
+                piece.addClosedCell(boardCell);
+            } else if (boardCell.getState() == CellState.EMPTY || boardCell.getState() == CellState.CHECKED) {
+                boardCell.setState(occupiedCell.getState());
+                boardOccupiedCells.add(boardCell);
             }
         }
         piece.setBoardOccupiedCells(boardOccupiedCells);
@@ -50,19 +45,16 @@ public class BoardCalculator {
     public void removePiece(Board board, Piece piece) {
         List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
         for (Cell occupiedCell : boardOccupiedCells) {
-            for (Cell boardCell : board.getCells()) {
-                if (occupiedCell.getX() == boardCell.getX() && occupiedCell.getY() == boardCell.getY()) {
-                    boardCell.setState(CellState.EMPTY);
-                    piece.setOnBoard(false);
-                }
-            }
+            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+            board.getCells().get(index).setState(CellState.EMPTY);
+            piece.setOnBoard(false);
         }
     }
 
     public void calculateVariables(Board board, ConfigBoard configBoard) {
+        Piece currentPiece = configBoard.getPiece();
         if (board.isFreeCell()) {
             Cell cell = board.getFreeCell();
-            Piece currentPiece = configBoard.getPiece();
             if (checkCellState(board, currentPiece, cell)) {
                 if (configBoard.getListPieces().size() > 1) {
                     putPiece(board, currentPiece, cell);
@@ -87,9 +79,10 @@ public class BoardCalculator {
         }
     }
 
-    public void calculateCombinations(ConfigBoard config) {
+    public long calculateCombinations(int boardLength, List<String> listPieces) {
+        ConfigBoard config = new ConfigBoard(boardLength, listPieces);
         Board board = new Board(config.getSizeBoard());
         calculateVariables(board, config);
-        System.out.println(countCombinations / config.getRepetitiveCombinations());
+        return countCombinations / config.getRepetitiveCombinations();
     }
 }

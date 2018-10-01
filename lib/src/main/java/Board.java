@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
@@ -74,12 +75,8 @@ public class Board {
     }
 
     public void updateBoard(Cell currentCell) {
-        List<Cell> cells = getCells();
-        for (Cell cell : cells) {
-            if (currentCell.getX() == cell.getX() && currentCell.getY() == cell.getY()) {
-                cell.setState(CellState.USED);
-            }
-        }
+        int index = currentCell.getX() * size + currentCell.getY();
+        getCells().get(index).setState(CellState.USED);
     }
 
     public void returnBoardLastState() {

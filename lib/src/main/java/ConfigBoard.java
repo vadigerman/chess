@@ -27,6 +27,7 @@ public class ConfigBoard {
     public int getRepetitiveCombinations() {
         return repetitiveCombinations;
     }
+
     public void setRepetitiveCombinations(int repetitiveCombinations) {
         this.repetitiveCombinations = repetitiveCombinations;
     }
