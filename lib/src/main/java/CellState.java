@@ -3,6 +3,5 @@ public enum CellState {
     ATTACKED,
     BUSY,
     CHECKED,
-    USED,
-    CLOSED
+    USED
 }
