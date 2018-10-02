@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Piece {
+public  class Piece {
     String name;
     List<Cell> boardOccupiedCells;
     List<Cell> closedCells;
@@ -52,6 +52,9 @@ public class Piece {
 
     public List<Cell> getOccupiedCells(int x, int y, int n) {
         List<Cell> cells = new ArrayList<Cell>();
+       // getOccupiedCellsInt(cells);
         return cells;
     }
+
+    //protected abstract void getOccupiedCellsInt(List<Cell> cells);
 }

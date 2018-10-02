@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Cell {
     private CellState state;
     private int x;
@@ -21,15 +23,20 @@ public class Cell {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
     public int getY() {
         return y;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return state == cell.state;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(state);
     }
 }

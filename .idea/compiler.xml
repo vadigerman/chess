@@ -12,7 +12,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="app" target="1.5" />
-      <module name="lib" target="1.5" />
+      <module name="lib" target="1.7" />
       <module name="lv-ctco-chess" target="1.5" />
     </bytecodeTargetLevel>
   </component>

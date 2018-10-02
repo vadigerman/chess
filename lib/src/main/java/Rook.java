@@ -8,7 +8,7 @@ public class Rook extends Piece {
     }
 
     public List<Cell> getOccupiedCells(int x, int y, int n) {
-        List<Cell> cells = new ArrayList<Cell>();
+        List<Cell> cells = new ArrayList<>();
         for(int i = 0; i < y; i++) {
             cells.add(new Cell(x, i, CellState.ATTACKED));
         }

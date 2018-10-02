@@ -16,7 +16,7 @@ public class BoardCalculator {
         List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
         for (Cell occupiedCell : occupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            if (board.getCells().get(index).getState() == CellState.BUSY) {
+            if (board.getFreeCells().get(index).getState() == CellState.BUSY) {
                 return false;
             }
         }
@@ -28,7 +28,7 @@ public class BoardCalculator {
         List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
         for (Cell occupiedCell : occupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            Cell boardCell = board.getCells().get(index);
+            Cell boardCell = board.getFreeCells().get(index);
             if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
                 boardCell.setState(occupiedCell.getState());
                 boardOccupiedCells.add(boardCell);
@@ -46,7 +46,7 @@ public class BoardCalculator {
         List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
         for (Cell occupiedCell : boardOccupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            board.getCells().get(index).setState(CellState.EMPTY);
+            board.getFreeCells().get(index).setState(CellState.EMPTY);
             piece.setOnBoard(false);
         }
     }
@@ -82,7 +82,10 @@ public class BoardCalculator {
     public long calculateCombinations(int boardLength, List<String> listPieces) {
         ConfigBoard config = new ConfigBoard(boardLength, listPieces);
         Board board = new Board(config.getSizeBoard());
+        long startTime = System.nanoTime();
         calculateVariables(board, config);
+        long endTime = System.nanoTime();
+        System.out.println((endTime - startTime) / 1000000);
         return countCombinations / config.getRepetitiveCombinations();
     }
 }
