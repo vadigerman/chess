@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Cell {
     private CellState state;
     private int x;
@@ -37,6 +35,6 @@ public class Cell {
 
     @Override
     public int hashCode() {
-        return Objects.hash(state);
+        return (this.getX() * 100 + this.getY());
     }
 }

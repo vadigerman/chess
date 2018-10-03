@@ -7,7 +7,8 @@ public class Rook extends Piece {
         setOnBoard(false);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, int n) {
+    public List<Cell> getOccupiedCells(int x, int y, Board board) {
+        int n = board.getSize();
         List<Cell> cells = new ArrayList<>();
         for(int i = 0; i < y; i++) {
             cells.add(new Cell(x, i, CellState.ATTACKED));

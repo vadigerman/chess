@@ -7,8 +7,9 @@ public class King extends Piece {
         setOnBoard(false);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, int n) {
-        List<Cell> cells = new ArrayList<Cell>();
+    public List<Cell> getOccupiedCells(int x, int y, Board board) {
+        int n = board.getSize();
+        List<Cell> cells = new ArrayList<>();
         for(int i = x - 1; i <= x + 1; i++) {
             for (int j = y - 1; j <= y + 1; j++) {
                 if (i >= 0 && j >= 0 && i < n && j < n) {

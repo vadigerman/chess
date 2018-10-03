@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public  class Piece {
+public class Piece {
     String name;
     List<Cell> boardOccupiedCells;
     List<Cell> closedCells;
@@ -42,7 +42,7 @@ public  class Piece {
     public void addClosedCell(Cell cell) {
         List<Cell> cellList;
         if (getClosedCells() == null) {
-            cellList = new ArrayList<Cell>();
+            cellList = new ArrayList<>();
         } else {
             cellList = getClosedCells();
         }
@@ -50,8 +50,8 @@ public  class Piece {
         setClosedCells(cellList);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, int n) {
-        List<Cell> cells = new ArrayList<Cell>();
+    public List<Cell> getOccupiedCells(int x, int y, Board board) {
+        List<Cell> cells = new ArrayList<>();
        // getOccupiedCellsInt(cells);
         return cells;
     }

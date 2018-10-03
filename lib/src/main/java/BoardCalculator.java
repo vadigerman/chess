@@ -13,10 +13,10 @@ public class BoardCalculator {
                 }
             }
         }
-        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
+        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
         for (Cell occupiedCell : occupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            if (board.getFreeCells().get(index).getState() == CellState.BUSY) {
+            if (board.getCells().get(index).getState() == CellState.BUSY) {
                 return false;
             }
         }
@@ -24,11 +24,11 @@ public class BoardCalculator {
     }
 
     public void putPiece(Board board, Piece piece, Cell cell) {
-        List<Cell> boardOccupiedCells = new ArrayList<Cell>();
-        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board.getSize());
+        List<Cell> boardOccupiedCells = new ArrayList<>();
+        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
         for (Cell occupiedCell : occupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            Cell boardCell = board.getFreeCells().get(index);
+            Cell boardCell = board.getCells().get(index);
             if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
                 boardCell.setState(occupiedCell.getState());
                 boardOccupiedCells.add(boardCell);
@@ -46,19 +46,19 @@ public class BoardCalculator {
         List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
         for (Cell occupiedCell : boardOccupiedCells) {
             int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            board.getFreeCells().get(index).setState(CellState.EMPTY);
+            board.getCells().get(index).setState(CellState.EMPTY);
             piece.setOnBoard(false);
         }
     }
 
     public void calculateVariables(Board board, ConfigBoard configBoard) {
-        Piece currentPiece = configBoard.getPiece();
+        Piece currentPiece = board.getPiece();
         if (board.isFreeCell()) {
             Cell cell = board.getFreeCell();
             if (checkCellState(board, currentPiece, cell)) {
                 if (configBoard.getListPieces().size() > 1) {
                     putPiece(board, currentPiece, cell);
-                    configBoard.pushPiece();
+                    board.pushPiece();
                     board.returnBoardLastState();
                     calculateVariables(board, configBoard);
                 } else {
@@ -71,7 +71,7 @@ public class BoardCalculator {
             }
             if (currentPiece.isOnBoard()) {
                 removePiece(board, currentPiece);
-                configBoard.popPiece();
+                board.popPiece();
                 calculateVariables(board, configBoard);
             }
         } else {
@@ -81,7 +81,9 @@ public class BoardCalculator {
 
     public long calculateCombinations(int boardLength, List<String> listPieces) {
         ConfigBoard config = new ConfigBoard(boardLength, listPieces);
-        Board board = new Board(config.getSizeBoard());
+        Board board = new Board(config);
+        board.getWRFreeCell();
+        board.updateWRCells();
         long startTime = System.nanoTime();
         calculateVariables(board, config);
         long endTime = System.nanoTime();

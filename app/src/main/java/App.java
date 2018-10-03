@@ -1,11 +1,14 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 public class App {
     public static int getBoardSize () {
+        ResourceBundle myBundle = ResourceBundle.getBundle("Labels");
         Scanner sc = new Scanner(System.in);
-        System.out.println("enter count chessboard's rows/columns (count rows = count columns): ");
+        System.out.println(myBundle.getString("chessboard_size"));
         int boardLength = sc.nextInt();
         if (boardLength <= 0) {
             System.out.println("count must be a positive number");
