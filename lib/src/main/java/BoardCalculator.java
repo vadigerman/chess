@@ -1,5 +1,7 @@
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class BoardCalculator {
     private long countCombinations;
@@ -13,32 +15,32 @@ public class BoardCalculator {
                 }
             }
         }
-        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
-        for (Cell occupiedCell : occupiedCells) {
-            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            if (board.getCells().get(index).getState() == CellState.BUSY) {
-                return false;
-            }
-        }
+        Map<Integer, WeakReference<Cell>> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
+//        for (Cell occupiedCell : occupiedCells) {
+//            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+//            if (board.getCells().get(index).getState() == CellState.BUSY) {
+//                return false;
+//            }
+//        }
         return true;
     }
 
     public void putPiece(Board board, Piece piece, Cell cell) {
         List<Cell> boardOccupiedCells = new ArrayList<>();
-        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
-        for (Cell occupiedCell : occupiedCells) {
-            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-            Cell boardCell = board.getCells().get(index);
-            if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
-                boardCell.setState(occupiedCell.getState());
-                boardOccupiedCells.add(boardCell);
-                piece.addClosedCell(boardCell);
-            } else if (boardCell.getState() == CellState.EMPTY || boardCell.getState() == CellState.CHECKED) {
-                boardCell.setState(occupiedCell.getState());
-                boardOccupiedCells.add(boardCell);
-            }
-        }
-        piece.setBoardOccupiedCells(boardOccupiedCells);
+//        List<Cell> occupiedCells = piece.getOccupiedCells(cell.getX(), cell.getY(), board);
+//        for (Cell occupiedCell : occupiedCells) {
+//            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+//            Cell boardCell = board.getCells().get(index);
+//            if (boardCell.getState() == CellState.CHECKED && occupiedCell.getState() == CellState.BUSY) {
+//                boardCell.setState(occupiedCell.getState());
+//                boardOccupiedCells.add(boardCell);
+//                piece.addClosedCell(boardCell);
+//            } else if (boardCell.getState() == CellState.EMPTY || boardCell.getState() == CellState.CHECKED) {
+//                boardCell.setState(occupiedCell.getState());
+//                boardOccupiedCells.add(boardCell);
+//            }
+//        }
+//        piece.setBoardOccupiedCells(boardOccupiedCells);
         piece.setOnBoard(true);
     }
 
@@ -79,15 +81,27 @@ public class BoardCalculator {
         }
     }
 
+    public Board putPieceOnCell(Board board, Cell cell) {
+        Piece currentPiece = board.getPiece();
+        Map<Integer, WeakReference<Cell>> occupiedWRCells = currentPiece.getOccupiedCells(cell.getX(), cell.getY(), board);
+        for (Map.Entry<Integer, WeakReference<Cell>> entry : occupiedWRCells.entrySet()) {
+            WeakReference<Cell> wrCell = entry.getValue();
+            board.replaceReferenceFreeCellByOccupied(wrCell);
+        }
+        board.updateBusyCell(cell);
+        return board;
+    }
+
     public long calculateCombinations(int boardLength, List<String> listPieces) {
         ConfigBoard config = new ConfigBoard(boardLength, listPieces);
         Board board = new Board(config);
-        board.getWRFreeCell();
-        board.updateWRCells();
-        long startTime = System.nanoTime();
-        calculateVariables(board, config);
-        long endTime = System.nanoTime();
-        System.out.println((endTime - startTime) / 1000000);
+        WeakReference<Cell> wrCell = board.getWRFreeCell();
+        putPieceOnCell(board, wrCell.get());
+
+//        long startTime = System.nanoTime();
+//        calculateVariables(board, config);
+//        long endTime = System.nanoTime();
+//        System.out.println((endTime - startTime) / 1000000);
         return countCombinations / config.getRepetitiveCombinations();
     }
 }

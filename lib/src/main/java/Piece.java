@@ -1,5 +1,8 @@
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Piece {
     String name;
@@ -50,11 +53,18 @@ public class Piece {
         setClosedCells(cellList);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, Board board) {
-        List<Cell> cells = new ArrayList<>();
+    public void addWRCell(int i, int j, Board board, Map<Integer, WeakReference<Cell>> mapWRCells) {
+        int key = i * 100 + j;
+        WeakReference<Cell> wrCell = board.getFreeCells().get(key);
+        if (wrCell != null) {
+            mapWRCells.put(key, wrCell);
+        }
+    }
+
+    public Map<Integer, WeakReference<Cell>> getOccupiedCells(int x, int y, Board board) {
+        Map<Integer, WeakReference<Cell>> cells = new HashMap<>();
        // getOccupiedCellsInt(cells);
         return cells;
     }
-
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
 }

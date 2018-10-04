@@ -3,13 +3,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 
 public class Board {
     private List<Cell> cells;
-    private HashMap<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
-    private HashMap<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
+    private Map<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
+    private Map<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
     private int size;
     private List<Piece> listPieces;
     private Stack<Piece> stackPieces = new Stack<>();
@@ -41,12 +40,16 @@ public class Board {
         return size;
     }
 
-    public HashMap<Integer, WeakReference<Cell>> getFreeCells() {
+    public Map<Integer, WeakReference<Cell>> getFreeCells() {
         return freeCells;
     }
 
     public List<Cell> getCells() {
         return cells;
+    }
+
+    public Map<Integer, WeakReference<Cell>> getOccupiedCells() {
+        return occupiedCells;
     }
 
     public Cell getFreeCell() {
@@ -64,9 +67,17 @@ public class Board {
         return getFreeCells().get(0);
     }
 
-    public void updateWRCells() {
-        int key = getWRFreeCell().get().hashCode();
-        occupiedCells.put(key, getWRFreeCell());
+    public void replaceReferenceFreeCellByOccupied(WeakReference<Cell> wrCell) {
+        int key = wrCell.get().hashCode();
+        occupiedCells.put(key, wrCell);
+        freeCells.remove(key);
+    }
+
+    public void updateBusyCell(Cell cell) {
+        int key = cell.hashCode();
+        WeakReference<Cell> wrCell = freeCells.get(key);
+        wrCell.get().setState(CellState.BUSY);
+        occupiedCells.put(key, wrCell);
         freeCells.remove(key);
     }
 

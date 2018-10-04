@@ -1,5 +1,8 @@
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Rook extends Piece {
     public Rook() {
@@ -7,22 +10,27 @@ public class Rook extends Piece {
         setOnBoard(false);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, Board board) {
+    public Map<Integer, WeakReference<Cell>> getOccupiedCells(int x, int y, Board board) {
         int n = board.getSize();
-        List<Cell> cells = new ArrayList<>();
+        Map<Integer, WeakReference<Cell>> mapWRCells = new HashMap<>();
+//        List<Cell> cells = new ArrayList<>();
         for(int i = 0; i < y; i++) {
-            cells.add(new Cell(x, i, CellState.ATTACKED));
+            addWRCell(x, i, board, mapWRCells);
+//            cells.add(new Cell(x, i, CellState.ATTACKED));
         }
         for(int i = y + 1; i < n; i++) {
-            cells.add(new Cell(x, i, CellState.ATTACKED));
+            addWRCell(x, i, board, mapWRCells);
+//            cells.add(new Cell(x, i, CellState.ATTACKED));
         }
         for(int i = 0; i < x; i++) {
-            cells.add(new Cell(i, y, CellState.ATTACKED));
+            addWRCell(i, y, board, mapWRCells);
+//            cells.add(new Cell(i, y, CellState.ATTACKED));
         }
         for(int i = x + 1; i < n; i++) {
-            cells.add(new Cell(i, y, CellState.ATTACKED));
+            addWRCell(i, y, board, mapWRCells);
+//            cells.add(new Cell(i, y, CellState.ATTACKED));
         }
-        cells.add(new Cell(x, y, CellState.BUSY));
-        return cells;
+//        cells.add(new Cell(x, y, CellState.BUSY));
+        return mapWRCells;
     }
 }

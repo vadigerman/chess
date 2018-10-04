@@ -3,6 +3,10 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 public class BoardCalculatorTest {
+    private ConfigBoard config = new ConfigBoard(3, Arrays.asList("queen"));
+    private Board board = new Board(config);
+    private Cell cell = new Cell(1, 1, CellState.BUSY);
+
     @Test
     public void calculate_4_kings_3_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
@@ -22,12 +26,6 @@ public class BoardCalculatorTest {
     }
 
     @Test
-    public void calculate_queen_rook_2_boardSize() throws Exception{
-        BoardCalculator boardCalculator = new BoardCalculator();
-        assertEquals(0, boardCalculator.calculateCombinations(2, Arrays.asList("queen", "rook")));
-    }
-
-    @Test
     public void calculate_8_queens_8_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
         assertEquals(92, boardCalculator.calculateCombinations(8, Arrays.asList("queen", "queen", "queen", "queen", "queen", "queen", "queen", "queen")));
@@ -37,5 +35,12 @@ public class BoardCalculatorTest {
     public void calculate_2_queens_2_bishops_2_kings_knight_7_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
         assertEquals(3063828, boardCalculator.calculateCombinations(7, Arrays.asList("queen", "queen", "bishop", "bishop", "king", "king", "knight")));
+    }
+
+    @Test
+    public void putPieceOnCell() {
+        BoardCalculator boardCalculator = new BoardCalculator();
+        Board newBoard = boardCalculator.putPieceOnCell(board, cell);
+        assertEquals(0, newBoard.getFreeCells().size());
     }
 }
