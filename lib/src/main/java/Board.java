@@ -8,7 +8,7 @@ import java.util.Stack;
 public class Board {
     private List<Cell> cells;
     private Map<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
-    private Map<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
+    private Map<Integer, WeakReference<Cell>> occupiedWrCells = new HashMap<>();
     private int size;
     private List<Piece> listPieces;
     private Stack<Piece> stackPieces = new Stack<>();
@@ -53,7 +53,72 @@ public class Board {
     }
 
     public Map<Integer, WeakReference<Cell>> getOccupiedCells() {
-        return occupiedCells;
+        return occupiedWrCells;
+    }
+
+    public WeakReference<Cell> getWRFreeCell() {
+        int key = getFreeCells().entrySet().iterator().next().getKey();
+        return getFreeCells().get(key);
+    }
+
+    public void replaceReferenceFreeCellByOccupied(WeakReference<Cell> wrCell, Piece piece) {
+        int key = wrCell.get().hashCode();
+        occupiedWrCells.put(key, wrCell);
+        piece.addBoardOccupiedCells(key, wrCell);
+        freeCells.remove(key);
+    }
+
+    public void updateBusyCell(Cell cell, CellState cellState, Piece piece) {
+        int key = cell.hashCode();
+        WeakReference<Cell> wrCell = freeCells.get(key);
+        wrCell.get().setState(cellState);
+        occupiedWrCells.put(key, wrCell);
+        piece.addClosedCells(key, wrCell);
+        freeCells.remove(key);
+    }
+
+    public void pushPiece() {
+        stackPieces.push(listPieces.get(0));
+        listPieces.remove(0);
+    }
+
+    public void popPiece() {
+        listPieces.add(0, stackPieces.pop());
+        listPieces.get(1).setClosedCells(null);
+    }
+
+    public Piece getPiece() {
+        return listPieces.get(0);
+    }
+
+    public void removePiece(Piece piece) {
+        Map<Integer, WeakReference<Cell>> occupiedCells = piece.getBoardOccupiedCells();
+        for (Map.Entry<Integer, WeakReference<Cell>> entry : occupiedCells.entrySet()) {
+            WeakReference<Cell> wrCell = entry.getValue();
+            if (wrCell.get().getState() != CellState.BUSY) {
+                int key = wrCell.get().hashCode();
+                freeCells.put(key, wrCell);
+                occupiedWrCells.remove(key);
+                occupiedCells.remove(key);
+            }
+        }
+//        List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
+//        for (Cell occupiedCell : boardOccupiedCells) {
+//            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
+//            board.getCells().get(index).setState(CellState.EMPTY);
+//            piece.setOnBoard(false);
+//        }
+    }
+
+    public void returnBoardLastState(Piece piece) {
+        Map<Integer, WeakReference<Cell>> closedCells = piece.getClosedCells();
+        for (Map.Entry<Integer, WeakReference<Cell>> entry : closedCells.entrySet()) {
+            WeakReference<Cell> wrCell = entry.getValue();
+            int key = wrCell.get().hashCode();
+            freeCells.put(key, wrCell);
+            occupiedWrCells.remove(key);
+//            closedCells.remove(key);
+        }
     }
 
     public Cell getFreeCell() {
@@ -65,26 +130,6 @@ public class Board {
             }
         }
         return null;
-    }
-
-    public WeakReference<Cell> getWRFreeCell() {
-        int key = getFreeCells().entrySet().iterator().next().getKey();
-        return getFreeCells().get(key);
-    }
-
-    public void replaceReferenceFreeCellByOccupied(WeakReference<Cell> wrCell) {
-        int key = wrCell.get().hashCode();
-        occupiedCells.put(key, wrCell);
-        freeCells.remove(key);
-    }
-
-    public void updateBusyCell(Cell cell, CellState cellState, Piece piece) {
-        int key = cell.hashCode();
-        WeakReference<Cell> wrCell = freeCells.get(key);
-        wrCell.get().setState(cellState);
-        occupiedCells.put(key, wrCell);
-        piece.addClosedCells(key, wrCell);
-        freeCells.remove(key);
     }
 
     public boolean isFreeCell() {
@@ -112,29 +157,6 @@ public class Board {
     public void updateBoard(Cell currentCell) {
         int index = currentCell.getX() * size + currentCell.getY();
         getCells().get(index).setState(CellState.USED);
-    }
-
-    public void returnBoardLastState() {
-        List<Cell> cells = getCells();
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.USED || cell.getState() == CellState.CHECKED) {
-                cell.setState(CellState.EMPTY);
-            }
-        }
-    }
-
-    public void pushPiece() {
-        stackPieces.push(listPieces.get(0));
-        listPieces.remove(0);
-    }
-
-//    public void popPiece() {
-//        listPieces.add(0, stackPieces.pop());
-//        listPieces.get(1).setClosedCells(null);
-//    }
-
-    public Piece getPiece() {
-        return listPieces.get(0);
     }
 }
 

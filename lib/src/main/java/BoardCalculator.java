@@ -85,7 +85,7 @@ public class BoardCalculator {
         Map<Integer, WeakReference<Cell>> occupiedWRCells = currentPiece.getOccupiedCells(cell.getX(), cell.getY(), board);
         for (Map.Entry<Integer, WeakReference<Cell>> entry : occupiedWRCells.entrySet()) {
             WeakReference<Cell> wrCell = entry.getValue();
-            board.replaceReferenceFreeCellByOccupied(wrCell);
+            board.replaceReferenceFreeCellByOccupied(wrCell, currentPiece);
         }
         board.updateBusyCell(cell, CellState.BUSY, currentPiece);
         board.pushPiece();
@@ -111,6 +111,13 @@ public class BoardCalculator {
                 board.updateBusyCell(cell, CellState.ATTACKED, currentPiece);
                 mainFunction(board);
             }
+            if (currentPiece.isOnBoard()) {
+                board.removePiece(currentPiece);
+                board.popPiece();
+                mainFunction(board);
+            }
+        } else {
+            board.returnBoardLastState(currentPiece);
         }
     }
 

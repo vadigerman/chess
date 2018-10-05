@@ -1,21 +1,31 @@
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Piece {
     String name;
-    List<Cell> boardOccupiedCells;
+    Map<Integer, WeakReference<Cell>> boardOccupiedCells = new HashMap<>();
     Map<Integer, WeakReference<Cell>> closedCells = new HashMap<>();
     boolean onBoard;
 
-    public List<Cell> getBoardOccupiedCells() {
+    public Map<Integer, WeakReference<Cell>> getBoardOccupiedCells() {
         return boardOccupiedCells;
+    }
+
+    public void setBoardOccupiedCells(Map<Integer, WeakReference<Cell>> boardOccupiedCells) {
+        this.boardOccupiedCells = boardOccupiedCells;
+    }
+
+    public void addBoardOccupiedCells(int key, WeakReference<Cell> wrCell) {
+        closedCells.put(key, wrCell);
     }
 
     public Map<Integer, WeakReference<Cell>> getClosedCells() {
         return closedCells;
+    }
+
+    public void setClosedCells(Map<Integer, WeakReference<Cell>> closedCells) {
+        this.closedCells = closedCells;
     }
 
     public void addClosedCells(int key, WeakReference<Cell> wrCell) {
