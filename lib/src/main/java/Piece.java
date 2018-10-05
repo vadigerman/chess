@@ -7,8 +7,20 @@ import java.util.Map;
 public class Piece {
     String name;
     List<Cell> boardOccupiedCells;
-    List<Cell> closedCells;
+    Map<Integer, WeakReference<Cell>> closedCells = new HashMap<>();
     boolean onBoard;
+
+    public List<Cell> getBoardOccupiedCells() {
+        return boardOccupiedCells;
+    }
+
+    public Map<Integer, WeakReference<Cell>> getClosedCells() {
+        return closedCells;
+    }
+
+    public void addClosedCells(int key, WeakReference<Cell> wrCell) {
+        closedCells.put(key, wrCell);
+    }
 
     public boolean isOnBoard() {
         return onBoard;
@@ -26,33 +38,6 @@ public class Piece {
         this.name = name;
     }
 
-    public List<Cell> getBoardOccupiedCells() {
-        return boardOccupiedCells;
-    }
-
-    public void setBoardOccupiedCells(List<Cell> boardOccupiedCells) {
-        this.boardOccupiedCells = boardOccupiedCells;
-    }
-
-    public List<Cell> getClosedCells() {
-        return closedCells;
-    }
-
-    public void setClosedCells(List<Cell> closedCells) {
-        this.closedCells = closedCells;
-    }
-
-    public void addClosedCell(Cell cell) {
-        List<Cell> cellList;
-        if (getClosedCells() == null) {
-            cellList = new ArrayList<>();
-        } else {
-            cellList = getClosedCells();
-        }
-        cellList.add(cell);
-        setClosedCells(cellList);
-    }
-
     public void addWRCell(int i, int j, Board board, Map<Integer, WeakReference<Cell>> mapWRCells) {
         int key = i * 100 + j;
         WeakReference<Cell> wrCell = board.getFreeCells().get(key);
@@ -61,10 +46,23 @@ public class Piece {
         }
     }
 
+    public boolean checkWRCell(int i, int j, Board board, Map<Integer, WeakReference<Cell>> mapWRCells) {
+        int key = i * 100 + j;
+        WeakReference<Cell> wrCell = board.getOccupiedCells().get(key);
+        if (wrCell != null && wrCell.get().getState() == CellState.BUSY) {
+            return false;
+        }
+        return true;
+    }
+
     public Map<Integer, WeakReference<Cell>> getOccupiedCells(int x, int y, Board board) {
         Map<Integer, WeakReference<Cell>> cells = new HashMap<>();
        // getOccupiedCellsInt(cells);
         return cells;
     }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
+
+    public boolean checkOccupiedCell(int x, int y, Board board) {
+        return true;
+    }
 }

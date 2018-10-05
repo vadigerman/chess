@@ -11,7 +11,6 @@ public class Pawn extends Piece {
     }
 
     public Map<Integer, WeakReference<Cell>> getOccupiedCells(int x, int y, Board board) {
-//        List<Cell> cells = new ArrayList<>();
         Map<Integer, WeakReference<Cell>> mapWRCells = new HashMap<>();
         int key;
         WeakReference<Cell> wrCell;

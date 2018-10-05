@@ -3,9 +3,6 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 
 public class BoardCalculatorTest {
-    private ConfigBoard config = new ConfigBoard(3, Arrays.asList("queen"));
-    private Board board = new Board(config);
-    private Cell cell = new Cell(1, 1, CellState.BUSY);
 
     @Test
     public void calculate_4_kings_3_boardSize() throws Exception{
@@ -38,9 +35,8 @@ public class BoardCalculatorTest {
     }
 
     @Test
-    public void putPieceOnCell() {
+    public void calculateCombinations() {
         BoardCalculator boardCalculator = new BoardCalculator();
-        Board newBoard = boardCalculator.putPieceOnCell(board, cell);
-        assertEquals(0, newBoard.getFreeCells().size());
+        assertEquals(0, boardCalculator.calculateCombinations(3, Arrays.asList("rook, knight")).getOccupiedCells().get(0).get().getState());
     }
 }

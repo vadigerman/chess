@@ -20,6 +20,10 @@ public class Board {
         createWRCells();
     }
 
+    public List<Piece> getListPieces() {
+        return listPieces;
+    }
+
     public void createWRCells() {
         for(Cell cell : getCells()) {
             freeCells.put(cell.hashCode(), new WeakReference<>(cell));
@@ -64,7 +68,8 @@ public class Board {
     }
 
     public WeakReference<Cell> getWRFreeCell() {
-        return getFreeCells().get(0);
+        int key = getFreeCells().entrySet().iterator().next().getKey();
+        return getFreeCells().get(key);
     }
 
     public void replaceReferenceFreeCellByOccupied(WeakReference<Cell> wrCell) {
@@ -73,11 +78,12 @@ public class Board {
         freeCells.remove(key);
     }
 
-    public void updateBusyCell(Cell cell) {
+    public void updateBusyCell(Cell cell, CellState cellState, Piece piece) {
         int key = cell.hashCode();
         WeakReference<Cell> wrCell = freeCells.get(key);
-        wrCell.get().setState(CellState.BUSY);
+        wrCell.get().setState(cellState);
         occupiedCells.put(key, wrCell);
+        piece.addClosedCells(key, wrCell);
         freeCells.remove(key);
     }
 
@@ -122,10 +128,10 @@ public class Board {
         listPieces.remove(0);
     }
 
-    public void popPiece() {
-        listPieces.add(0, stackPieces.pop());
-        listPieces.get(1).setClosedCells(null);
-    }
+//    public void popPiece() {
+//        listPieces.add(0, stackPieces.pop());
+//        listPieces.get(1).setClosedCells(null);
+//    }
 
     public Piece getPiece() {
         return listPieces.get(0);
