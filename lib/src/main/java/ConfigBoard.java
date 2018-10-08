@@ -4,7 +4,7 @@ import java.util.List;
 public class ConfigBoard {
     int sizeBoard;
     List<Piece> listPieces = new ArrayList<>();
-    int repetitiveCombinations = 1;
+    long repetitiveCombinations = 1;
 
     public ConfigBoard(int sizeBoard, List<String> pieces) {
         this.sizeBoard = sizeBoard;
@@ -12,7 +12,7 @@ public class ConfigBoard {
     }
 
     public void calculateRepetitiveCombinations(List<String> pieces) {
-        int multiplier = 1;
+        long multiplier = 1;
         String currentPiece = "";
         for (String piece : pieces) {
             PieceFactory pieceFactory = new PieceFactory();
@@ -27,7 +27,7 @@ public class ConfigBoard {
         }
     }
 
-    public int getRepetitiveCombinations() {
+    public long getRepetitiveCombinations() {
         return repetitiveCombinations;
     }
 

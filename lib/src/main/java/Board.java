@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 public class Board {
@@ -56,9 +57,15 @@ public class Board {
         return occupiedWrCells;
     }
 
-    public WeakReference<Cell> getWRFreeCell() {
-        int key = getFreeCells().entrySet().iterator().next().getKey();
-        return getFreeCells().get(key);
+    public Cell getWRFreeCell(Piece piece) {
+        getFreeCells().entrySet();
+        for (Map.Entry<Integer, WeakReference<Cell>> entry : getFreeCells().entrySet()) {
+            Cell cell = entry.getValue().get();
+            if (piece.getClosedCells().get(cell.hashCode()) == null) {
+                return cell;
+            }
+        }
+        return null;
     }
 
     public void replaceReferenceFreeCellByOccupied(WeakReference<Cell> wrCell, Piece piece) {
@@ -68,57 +75,62 @@ public class Board {
         freeCells.remove(key);
     }
 
-    public void updateBusyCell(Cell cell, CellState cellState, Piece piece) {
-        int key = cell.hashCode();
-        WeakReference<Cell> wrCell = freeCells.get(key);
-        wrCell.get().setState(cellState);
-        occupiedWrCells.put(key, wrCell);
-        piece.addClosedCells(key, wrCell);
-        freeCells.remove(key);
-    }
-
     public void pushPiece() {
         stackPieces.push(listPieces.get(0));
         listPieces.remove(0);
     }
 
     public void popPiece() {
-        listPieces.add(0, stackPieces.pop());
-        listPieces.get(1).setClosedCells(null);
+        listPieces.get(0).getClosedCells().clear();
+        if (!stackPieces.isEmpty()) {
+            listPieces.add(0, stackPieces.pop());
+        }
     }
 
     public Piece getPiece() {
         return listPieces.get(0);
     }
 
+    public void updateBusyCell(Cell cell, CellState cellState, Piece piece) {
+        Integer key = cell.hashCode();
+        WeakReference<Cell> wrCell = getFreeCells().get(key);
+        wrCell.get().setState(cellState);
+        occupiedWrCells.put(key, wrCell);
+        piece.addClosedCells(key, wrCell);
+        freeCells.remove(key);
+    }
+
+    public void removeWrCells(WeakReference<Cell> wrCell) {
+        Integer key = wrCell.get().hashCode();
+        freeCells.put(key, wrCell);
+        occupiedWrCells.remove(key);
+    }
+
     public void removePiece(Piece piece) {
         Map<Integer, WeakReference<Cell>> occupiedCells = piece.getBoardOccupiedCells();
         for (Map.Entry<Integer, WeakReference<Cell>> entry : occupiedCells.entrySet()) {
             WeakReference<Cell> wrCell = entry.getValue();
-            if (wrCell.get().getState() != CellState.BUSY) {
-                int key = wrCell.get().hashCode();
-                freeCells.put(key, wrCell);
-                occupiedWrCells.remove(key);
-                occupiedCells.remove(key);
-            }
+            removeWrCells(wrCell);
         }
-//        List<Cell> boardOccupiedCells = piece.getBoardOccupiedCells();
-//        for (Cell occupiedCell : boardOccupiedCells) {
-//            int index = occupiedCell.getX() * board.getSize() + occupiedCell.getY();
-//            board.getCells().get(index).setState(CellState.EMPTY);
-//            piece.setOnBoard(false);
-//        }
+        piece.getBoardOccupiedCells().clear();
+
+        Map<Integer, WeakReference<Cell>> closedCells = piece.getClosedCells();
+        for (Map.Entry<Integer, WeakReference<Cell>> entry : closedCells.entrySet()) {
+            WeakReference<Cell> wrCell = entry.getValue();
+            if (wrCell.get().getState() == CellState.BUSY) {
+                wrCell.get().setState(CellState.ATTACKED);
+            }
+            removeWrCells(wrCell);
+        }
     }
 
     public void returnBoardLastState(Piece piece) {
         Map<Integer, WeakReference<Cell>> closedCells = piece.getClosedCells();
         for (Map.Entry<Integer, WeakReference<Cell>> entry : closedCells.entrySet()) {
             WeakReference<Cell> wrCell = entry.getValue();
-            int key = wrCell.get().hashCode();
-            freeCells.put(key, wrCell);
-            occupiedWrCells.remove(key);
-//            closedCells.remove(key);
+            removeWrCells(wrCell);
         }
+        piece.getClosedCells().clear();
     }
 
     public Cell getFreeCell() {

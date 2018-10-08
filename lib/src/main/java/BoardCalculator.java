@@ -1,5 +1,4 @@
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -96,40 +95,39 @@ public class BoardCalculator {
     public void mainFunction(Board board) {
         Piece currentPiece = board.getPiece();
         if (board.getFreeCells().size() > 0) {
-            WeakReference<Cell> wrCell = board.getWRFreeCell();
-            Cell cell = wrCell.get();
-            if (currentPiece.checkOccupiedCell(cell.getX(), cell.getY(), board)) {
-                if (board.getListPieces().size() > 1) {
-                    putPieceOnCell(board, cell, currentPiece);
-                    mainFunction(board);
+            Cell cell = board.getWRFreeCell(currentPiece);
+            if (cell != null) {
+                if (currentPiece.checkCloseCell(cell) && currentPiece.checkOccupiedCell(cell.getX(), cell.getY(), board)) {
+                    if (board.getListPieces().size() > 1) {
+                        putPieceOnCell(board, cell, currentPiece);
+                        mainFunction(board);
+                    } else {
+                        countCombinations++;
+                        board.updateBusyCell(cell, CellState.ATTACKED, currentPiece);
+                        mainFunction(board);
+                    }
                 } else {
-                    countCombinations++;
                     board.updateBusyCell(cell, CellState.ATTACKED, currentPiece);
                     mainFunction(board);
                 }
-            } else {
-                board.updateBusyCell(cell, CellState.ATTACKED, currentPiece);
-                mainFunction(board);
-            }
-            if (currentPiece.isOnBoard()) {
-                board.removePiece(currentPiece);
-                board.popPiece();
-                mainFunction(board);
+                if (currentPiece.isOnBoard()) {
+                    board.removePiece(currentPiece);
+                    board.popPiece();
+                    mainFunction(board);
+                }
             }
         } else {
             board.returnBoardLastState(currentPiece);
         }
     }
 
-    public Board calculateCombinations(int boardLength, List<String> listPieces) {
+    public long calculateCombinations(int boardLength, List<String> listPieces) {
         ConfigBoard config = new ConfigBoard(boardLength, listPieces);
         Board board = new Board(config);
-        mainFunction(board);
 //        long startTime = System.nanoTime();
-//        calculateVariables(board, config);
+        mainFunction(board);
 //        long endTime = System.nanoTime();
 //        System.out.println((endTime - startTime) / 1000000);
-//        return countCombinations / config.getRepetitiveCombinations();
-        return board;
+        return countCombinations / config.getRepetitiveCombinations();
     }
 }

@@ -17,7 +17,7 @@ public class Piece {
     }
 
     public void addBoardOccupiedCells(int key, WeakReference<Cell> wrCell) {
-        closedCells.put(key, wrCell);
+        boardOccupiedCells.put(key, wrCell);
     }
 
     public Map<Integer, WeakReference<Cell>> getClosedCells() {
@@ -71,6 +71,10 @@ public class Piece {
         return cells;
     }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
+
+    public boolean checkCloseCell(Cell cell) {
+        return (getClosedCells().get(cell.getX() * 100 + cell.getY()) == null);
+    }
 
     public boolean checkOccupiedCell(int x, int y, Board board) {
         return true;
