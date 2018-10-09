@@ -1,11 +1,40 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Piece {
-    String name;
-    List<Cell> boardOccupiedCells;
-    List<Cell> closedCells;
-    boolean onBoard;
+    private String name;
+    private List<Cell> boardOccupiedCells;
+    private List<Cell> closedCells;
+    Map<Integer, Cell> attackedCells = new HashMap<>();
+    private Map<Integer, Cell> duplicateClosedCells = new HashMap<>();
+    private Map<Integer, Cell> duplicateAttackedCells = new HashMap<>();
+    private boolean onBoard;
+
+    public Map<Integer, Cell> getDuplicateClosedCells() {
+        return duplicateClosedCells;
+    }
+
+    public void addDuplicateClosedCells(Cell cell, int key) {
+        duplicateClosedCells.put(key, cell);
+    }
+
+    public Map<Integer, Cell> getDuplicateAttackedCells() {
+        return duplicateAttackedCells;
+    }
+
+    public void addDuplicateAttackedCells(Cell cell, int key) {
+        duplicateAttackedCells.put(key, cell);
+    }
+
+    public void clearDuplicateClosedCells() {
+        duplicateClosedCells.clear();
+    }
+
+    public void clearDuplicateAttackedCells() {
+        duplicateAttackedCells.clear();
+    }
 
     public boolean isOnBoard() {
         return onBoard;
@@ -50,11 +79,18 @@ public class Piece {
         setClosedCells(cellList);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, Board board) {
-        List<Cell> cells = new ArrayList<>();
+    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
+//        List<Cell> cells = new ArrayList<>();
        // getOccupiedCellsInt(cells);
-        return cells;
+        return attackedCells;
     }
 
+    public void putAttackedCell(int x, int y, Board board) {
+        int key = x * 100 + y;
+        Cell cell = board.getDuplicateCells().get(key);
+        if (cell != null) {
+            attackedCells.put(key, cell);
+        }
+    }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
 }

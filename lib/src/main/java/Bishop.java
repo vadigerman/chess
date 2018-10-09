@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 public class Bishop extends Piece {
     public Bishop() {
@@ -7,20 +6,22 @@ public class Bishop extends Piece {
         setOnBoard(false);
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, Board board) {
+    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
         int n = board.getSize();
-        List<Cell> cells = new ArrayList<>();
+//        List<Cell> cells = new ArrayList<>();
+        attackedCells.clear();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (((i - j) == (x - y)) || ((i + j) == (x + y))) {
-                    if (i == x && j == y) {
-                        cells.add(new Cell(i, j, CellState.BUSY));
-                    } else {
-                        cells.add(new Cell(i, j, CellState.ATTACKED));
+                    if (!(i == x && j == y)) {
+//                        cells.add(new Cell(i, j, CellState.BUSY));
+//                    } else {
+//                        cells.add(new Cell(i, j, CellState.ATTACKED));
+                        putAttackedCell(i, j, board);
                     }
                 }
             }
         }
-        return cells;
+        return attackedCells;
     }
 }

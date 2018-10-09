@@ -1,4 +1,3 @@
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +7,9 @@ import java.util.Stack;
 
 public class Board {
     private List<Cell> cells;
-    private HashMap<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
-    private HashMap<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
+    private Map<Integer, Cell> duplicateCells = new HashMap<>();
+//    private HashMap<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
+//    private HashMap<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
     private int size;
     private List<Piece> listPieces;
     private Stack<Piece> stackPieces = new Stack<>();
@@ -18,20 +18,26 @@ public class Board {
         this.size = config.getSizeBoard();
         this.cells = createBoard(size);
         this.listPieces = config.getListPieces();
-        createWRCells();
+//        createWRCells();
     }
 
-    public void createWRCells() {
-        for(Cell cell : getCells()) {
-            freeCells.put(cell.hashCode(), new WeakReference<>(cell));
-        }
+    public Map<Integer, Cell> getDuplicateCells() {
+        return duplicateCells;
     }
+
+//    public void createWRCells() {
+//        for(Cell cell : getCells()) {
+//            freeCells.put(cell.hashCode(), new WeakReference<>(cell));
+//        }
+//    }
 
     public List<Cell> createBoard(int n) {
         List<Cell> cells = new ArrayList<>();
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
-                cells.add(new Cell(i, j, CellState.EMPTY));
+                Cell cell = new Cell(i, j, CellState.EMPTY);
+                cells.add(cell);
+                duplicateCells.put(cell.hashCode(), cell);
             }
         }
         return cells;
@@ -41,9 +47,9 @@ public class Board {
         return size;
     }
 
-    public HashMap<Integer, WeakReference<Cell>> getFreeCells() {
-        return freeCells;
-    }
+//    public HashMap<Integer, WeakReference<Cell>> getFreeCells() {
+//        return freeCells;
+//    }
 
     public List<Cell> getCells() {
         return cells;
@@ -60,15 +66,15 @@ public class Board {
         return null;
     }
 
-    public WeakReference<Cell> getWRFreeCell() {
-        return getFreeCells().get(0);
-    }
-
-    public void updateWRCells() {
-        int key = getWRFreeCell().get().hashCode();
-        occupiedCells.put(key, getWRFreeCell());
-        freeCells.remove(key);
-    }
+//    public WeakReference<Cell> getWRFreeCell() {
+//        return getFreeCells().get(0);
+//    }
+//
+//    public void updateWRCells() {
+//        int key = getWRFreeCell().get().hashCode();
+//        occupiedCells.put(key, getWRFreeCell());
+//        freeCells.remove(key);
+//    }
 
     public boolean isFreeCell() {
         List<Cell> cells = getCells();
@@ -80,9 +86,9 @@ public class Board {
         return false;
     }
 
-    public boolean isWRFreeCell() {
-        return (getFreeCells().size() > 0);
-    }
+//    public boolean isWRFreeCell() {
+//        return (getFreeCells().size() > 0);
+//    }
 
     public void printBoard() {
         List<Cell> cells = getCells();
@@ -118,6 +124,10 @@ public class Board {
 
     public Piece getPiece() {
         return listPieces.get(0);
+    }
+
+    public List<Piece> getListPieces() {
+        return listPieces;
     }
 }
 
