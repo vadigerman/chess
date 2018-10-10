@@ -8,8 +8,6 @@ import java.util.Stack;
 public class Board {
     private List<Cell> cells;
     private Map<Integer, Cell> duplicateCells = new HashMap<>();
-//    private HashMap<Integer, WeakReference<Cell>> freeCells = new HashMap<>();
-//    private HashMap<Integer, WeakReference<Cell>> occupiedCells = new HashMap<>();
     private int size;
     private List<Piece> listPieces;
     private Stack<Piece> stackPieces = new Stack<>();
@@ -18,18 +16,11 @@ public class Board {
         this.size = config.getSizeBoard();
         this.cells = createBoard(size);
         this.listPieces = config.getListPieces();
-//        createWRCells();
     }
 
     public Map<Integer, Cell> getDuplicateCells() {
         return duplicateCells;
     }
-
-//    public void createWRCells() {
-//        for(Cell cell : getCells()) {
-//            freeCells.put(cell.hashCode(), new WeakReference<>(cell));
-//        }
-//    }
 
     public List<Cell> createBoard(int n) {
         List<Cell> cells = new ArrayList<>();
@@ -47,18 +38,25 @@ public class Board {
         return size;
     }
 
-//    public HashMap<Integer, WeakReference<Cell>> getFreeCells() {
-//        return freeCells;
-//    }
-
     public List<Cell> getCells() {
         return cells;
     }
 
-    public Cell getFreeCell() {
-        List<Cell> cells = getCells();
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.EMPTY) {
+//    public Cell getFreeCell() {
+//        List<Cell> cells = getCells();
+//        for (Cell cell : cells) {
+//            if (cell.getState() == CellState.EMPTY) {
+//                cell.setState(CellState.CHECKED);
+//                return cell;
+//            }
+//        }
+//        return null;
+//    }
+
+    public Cell getFreeDuplicateCell() {
+        for (Map.Entry<Integer, Cell> entryCell : duplicateCells.entrySet()) {
+            Cell cell = entryCell.getValue();
+            if (cell.getState().equals(CellState.EMPTY)) {
                 cell.setState(CellState.CHECKED);
                 return cell;
             }
@@ -66,29 +64,24 @@ public class Board {
         return null;
     }
 
-//    public WeakReference<Cell> getWRFreeCell() {
-//        return getFreeCells().get(0);
-//    }
-//
-//    public void updateWRCells() {
-//        int key = getWRFreeCell().get().hashCode();
-//        occupiedCells.put(key, getWRFreeCell());
-//        freeCells.remove(key);
+//    public boolean isFreeCell() {
+//        List<Cell> cells = getCells();
+//        for (Cell cell : cells) {
+//            if (cell.getState() == CellState.EMPTY) {
+//                return true;
+//            }
+//        }
+//        return false;
 //    }
 
-    public boolean isFreeCell() {
-        List<Cell> cells = getCells();
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.EMPTY) {
+    public boolean isFreeDuplicateCell() {
+        for (Map.Entry<Integer, Cell> entryCell : duplicateCells.entrySet()) {
+            if (entryCell.getValue().getState().equals(CellState.EMPTY)) {
                 return true;
             }
         }
         return false;
     }
-
-//    public boolean isWRFreeCell() {
-//        return (getFreeCells().size() > 0);
-//    }
 
     public void printBoard() {
         List<Cell> cells = getCells();
@@ -99,14 +92,13 @@ public class Board {
     }
 
     public void updateBoard(Cell currentCell) {
-        int index = currentCell.getX() * size + currentCell.getY();
-        getCells().get(index).setState(CellState.USED);
+        currentCell.setState(CellState.USED);
     }
 
     public void returnBoardLastState() {
-        List<Cell> cells = getCells();
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.USED || cell.getState() == CellState.CHECKED) {
+        for (Map.Entry<Integer, Cell> entryCell : duplicateCells.entrySet()) {
+            Cell cell = entryCell.getValue();
+            if (cell.getState().equals(CellState.USED) || cell.getState().equals(CellState.CHECKED)) {
                 cell.setState(CellState.EMPTY);
             }
         }
@@ -119,11 +111,17 @@ public class Board {
 
     public void popPiece() {
         listPieces.add(0, stackPieces.pop());
-        listPieces.get(1).setClosedCells(null);
+        listPieces.get(1).clearDuplicateClosedCells();
     }
 
     public Piece getPiece() {
-        return listPieces.get(0);
+        Piece piece = listPieces.get(0);
+//        Map<Integer, Cell> closedCells = piece.getDuplicateClosedCells();
+//        for (Map.Entry<Integer, Cell> entryCell : closedCells.entrySet()) {
+//            Cell cell = entryCell.getValue();
+//            cell.setState(CellState.CHECKED);
+//        }
+        return piece;
     }
 
     public List<Piece> getListPieces() {

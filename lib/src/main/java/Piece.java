@@ -5,12 +5,23 @@ import java.util.Map;
 
 public class Piece {
     private String name;
-    private List<Cell> boardOccupiedCells;
-    private List<Cell> closedCells;
     Map<Integer, Cell> attackedCells = new HashMap<>();
     private Map<Integer, Cell> duplicateClosedCells = new HashMap<>();
+    private List<Integer> arrClosedCells = new ArrayList<>();
     private Map<Integer, Cell> duplicateAttackedCells = new HashMap<>();
     private boolean onBoard;
+
+    public List<Integer> getArrClosedCells() {
+        return arrClosedCells;
+    }
+
+    public void addArrAttackedCells(int key) {
+        arrClosedCells.add(key);
+    }
+
+    public void setArrClosedCells(List<Integer> arrClosedCells) {
+        this.arrClosedCells = arrClosedCells;
+    }
 
     public Map<Integer, Cell> getDuplicateClosedCells() {
         return duplicateClosedCells;
@@ -52,33 +63,6 @@ public class Piece {
         this.name = name;
     }
 
-    public List<Cell> getBoardOccupiedCells() {
-        return boardOccupiedCells;
-    }
-
-    public void setBoardOccupiedCells(List<Cell> boardOccupiedCells) {
-        this.boardOccupiedCells = boardOccupiedCells;
-    }
-
-    public List<Cell> getClosedCells() {
-        return closedCells;
-    }
-
-    public void setClosedCells(List<Cell> closedCells) {
-        this.closedCells = closedCells;
-    }
-
-    public void addClosedCell(Cell cell) {
-        List<Cell> cellList;
-        if (getClosedCells() == null) {
-            cellList = new ArrayList<>();
-        } else {
-            cellList = getClosedCells();
-        }
-        cellList.add(cell);
-        setClosedCells(cellList);
-    }
-
     public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
 //        List<Cell> cells = new ArrayList<>();
        // getOccupiedCellsInt(cells);
@@ -90,6 +74,7 @@ public class Piece {
         Cell cell = board.getDuplicateCells().get(key);
         if (cell != null) {
             attackedCells.put(key, cell);
+            addArrAttackedCells(key);
         }
     }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
