@@ -7,7 +7,7 @@ public class Piece {
     private String name;
     Map<Integer, Cell> attackedCells = new HashMap<>();
     private Map<Integer, Cell> duplicateClosedCells = new HashMap<>();
-    private List<Integer> arrClosedCells = new ArrayList<>();
+    List<Integer> arrClosedCells = new ArrayList<>();
     private Map<Integer, Cell> duplicateAttackedCells = new HashMap<>();
     private boolean onBoard;
 
@@ -63,18 +63,19 @@ public class Piece {
         this.name = name;
     }
 
-    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
+    public List<Integer> getOccupiedCells(int x, int y, Board board) {
 //        List<Cell> cells = new ArrayList<>();
        // getOccupiedCellsInt(cells);
-        return attackedCells;
+        return arrClosedCells;
     }
 
     public void putAttackedCell(int x, int y, Board board) {
-        int key = x * 100 + y;
+        int key = x * 10 + y;
+//        int key = ((x & 0xFFFF) << 16) & (y & 0xFFFF);
         Cell cell = board.getDuplicateCells().get(key);
         if (cell != null) {
-            attackedCells.put(key, cell);
-//             addArrAttackedCells(key);
+//            attackedCells.put(key, cell);
+            addArrAttackedCells(key);
         }
     }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);

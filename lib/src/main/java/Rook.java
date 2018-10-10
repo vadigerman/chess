@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Map;
 
 public class Rook extends Piece {
@@ -6,10 +7,11 @@ public class Rook extends Piece {
         setOnBoard(false);
     }
 
-    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
+    public List<Integer> getOccupiedCells(int x, int y, Board board) {
         int n = board.getSize();
 //        List<Cell> cells = new ArrayList<>();
-        attackedCells.clear();
+//        attackedCells.clear();
+        arrClosedCells.clear();
         for(int i = 0; i < y; i++) {
 //            cells.add(new Cell(x, i, CellState.ATTACKED));
             putAttackedCell(x, i, board);
@@ -27,6 +29,6 @@ public class Rook extends Piece {
             putAttackedCell(i, y, board);
         }
 //        cells.add(new Cell(x, y, CellState.BUSY));
-        return attackedCells;
+        return arrClosedCells;
     }
 }

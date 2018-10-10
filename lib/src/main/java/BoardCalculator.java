@@ -29,30 +29,31 @@ public class BoardCalculator {
 //        if (closedCells.get(currentCell.hashCode()) != null) {
 //            return false;
 //        }
-//         List<Integer> arrOccupiedCells = piece.getArrClosedCells();
-//         for (Integer arrCell : arrOccupiedCells) {
-//             if (board.getDuplicateCells().get(arrCell).getState().equals(CellState.BUSY)) {
-//                 return false;
-//             }
-//         }
 
-       Map<Integer, Cell> occupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
-       for (Map.Entry<Integer, Cell> entryCell : occupiedCells.entrySet()) {
-           Cell cell = entryCell.getValue();
-           if (cell.getState().equals(CellState.BUSY)) {
-               return false;
-           }
-       }
+        List<Integer> arrOccupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
+        for (Integer arrCell : arrOccupiedCells) {
+            if (board.getDuplicateCells().get(arrCell).getState().equals(CellState.BUSY)) {
+                return false;
+            }
+        }
+
+//        Map<Integer, Cell> occupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
+//        for (Map.Entry<Integer, Cell> entryCell : occupiedCells.entrySet()) {
+//            Cell cell = entryCell.getValue();
+//            if (cell.getState().equals(CellState.BUSY)) {
+//                return false;
+//            }
+//        }
         return true;
     }
 
     public void putPiece(Board board, Piece piece, Cell currentCell) {
-        Map<Integer, Cell> occupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
-        for (Map.Entry<Integer, Cell> entryCell : occupiedCells.entrySet()) {
-            Cell cell = entryCell.getValue();
+        List<Integer> arrOccupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
+        for (Integer arrCell : arrOccupiedCells) {
+            Cell cell = board.getDuplicateCells().get(arrCell);
             if (cell.getState().equals(CellState.EMPTY) || cell.getState().equals(CellState.CHECKED)) {
                 cell.setState(CellState.ATTACKED);
-                piece.addDuplicateAttackedCells(cell, entryCell.getKey());
+                piece.addDuplicateAttackedCells(cell, arrCell);
             }
         }
         currentCell.setState(CellState.BUSY);

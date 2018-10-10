@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Map;
 
 public class Bishop extends Piece {
@@ -6,10 +7,11 @@ public class Bishop extends Piece {
         setOnBoard(false);
     }
 
-    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
+    public List<Integer> getOccupiedCells(int x, int y, Board board) {
         int n = board.getSize();
 //        List<Cell> cells = new ArrayList<>();
-        attackedCells.clear();
+//        attackedCells.clear();
+        arrClosedCells.clear();
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (((i - j) == (x - y)) || ((i + j) == (x + y))) {
@@ -22,6 +24,6 @@ public class Bishop extends Piece {
                 }
             }
         }
-        return attackedCells;
+        return arrClosedCells;
     }
 }

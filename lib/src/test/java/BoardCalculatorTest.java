@@ -44,4 +44,10 @@ public class BoardCalculatorTest {
         BoardCalculator boardCalculator = new BoardCalculator();
         assertEquals(3063828, boardCalculator.calculateCombinations(7, Arrays.asList("queen", "queen", "bishop", "bishop", "king", "king", "knight")));
     }
+
+    @Test
+    public void calculate_queen_rook_bishop_king_knight_pawn_6_boardSize() throws Exception{
+        BoardCalculator boardCalculator = new BoardCalculator();
+        assertEquals(653924, boardCalculator.calculateCombinations(6, Arrays.asList("queen", "rook", "bishop", "king", "knight", "pawn")));
+    }
 }
