@@ -74,7 +74,7 @@ public class Piece {
         Cell cell = board.getDuplicateCells().get(key);
         if (cell != null) {
             attackedCells.put(key, cell);
-            addArrAttackedCells(key);
+//             addArrAttackedCells(key);
         }
     }
     //protected abstract void getOccupiedCellsInt(List<Cell> cells);
