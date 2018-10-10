@@ -29,20 +29,20 @@ public class BoardCalculator {
 //        if (closedCells.get(currentCell.hashCode()) != null) {
 //            return false;
 //        }
-        List<Integer> arrOccupiedCells = piece.getArrClosedCells();
-        for (Integer arrCell : arrOccupiedCells) {
-            if (board.getDuplicateCells().get(arrCell).getState().equals(CellState.BUSY)) {
-                return false;
-            }
-        }
-
-//        Map<Integer, Cell> occupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
-//        for (Map.Entry<Integer, Cell> entryCell : occupiedCells.entrySet()) {
-//            Cell cell = entryCell.getValue();
-//            if (cell.getState().equals(CellState.BUSY)) {
+//        List<Integer> arrOccupiedCells = piece.getArrClosedCells();
+//        for (Integer arrCell : arrOccupiedCells) {
+//            if (board.getDuplicateCells().get(arrCell).getState().equals(CellState.BUSY)) {
 //                return false;
 //            }
 //        }
+
+        Map<Integer, Cell> occupiedCells = piece.getOccupiedCells(currentCell.getX(), currentCell.getY(), board);
+        for (Map.Entry<Integer, Cell> entryCell : occupiedCells.entrySet()) {
+            Cell cell = entryCell.getValue();
+            if (cell.getState().equals(CellState.BUSY)) {
+                return false;
+            }
+        }
         return true;
     }
 
