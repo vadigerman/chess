@@ -1,20 +1,10 @@
 public class Cell {
-    private CellState state;
     private int x;
     private int y;
 
-    public Cell(int x, int y, CellState state) {
-        this.state = state;
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public CellState getState() {
-        return state;
-    }
-
-    public void setState(CellState state) {
-        this.state = state;
     }
 
     public int getX() {
@@ -25,12 +15,20 @@ public class Cell {
         return y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Cell cell = (Cell) o;
-        return state == cell.state;
+        return x == cell.x && y == cell.y;
     }
 
     @Override

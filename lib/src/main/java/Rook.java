@@ -1,4 +1,4 @@
-import java.util.Map;
+import java.util.List;
 
 public class Rook extends Piece {
     public Rook() {
@@ -6,27 +6,38 @@ public class Rook extends Piece {
         setOnBoard(false);
     }
 
-    public Map<Integer, Cell> getOccupiedCells(int x, int y, Board board) {
+    public boolean isOccupiedCells(int x, int y, Board board) {
         int n = board.getSize();
-//        List<Cell> cells = new ArrayList<>();
-        attackedCells.clear();
+        Cell cell = new Cell(-1, -1);
+        getOccupiedCells().clear();
         for(int i = 0; i < y; i++) {
-//            cells.add(new Cell(x, i, CellState.ATTACKED));
-            putAttackedCell(x, i, board);
+            cell.setX(x);
+            cell.setY(i);
+            if (!checkCell(board, cell)) {
+                return false;
+            }
         }
         for(int i = y + 1; i < n; i++) {
-//            cells.add(new Cell(x, i, CellState.ATTACKED));
-            putAttackedCell(x, i, board);
+            cell.setX(x);
+            cell.setY(i);
+            if (!checkCell(board, cell)) {
+                return false;
+            }
         }
         for(int i = 0; i < x; i++) {
-//            cells.add(new Cell(i, y, CellState.ATTACKED));
-            putAttackedCell(i, y, board);
+            cell.setX(i);
+            cell.setY(y);
+            if (!checkCell(board, cell)) {
+                return false;
+            }
         }
         for(int i = x + 1; i < n; i++) {
-//            cells.add(new Cell(i, y, CellState.ATTACKED));
-            putAttackedCell(i, y, board);
+            cell.setX(i);
+            cell.setY(y);
+            if (!checkCell(board, cell)) {
+                return false;
+            }
         }
-//        cells.add(new Cell(x, y, CellState.BUSY));
-        return attackedCells;
+        return true;
     }
 }

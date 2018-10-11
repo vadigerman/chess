@@ -11,6 +11,6 @@ public class QueenTest {
     @Test
     public void getOccupiedCells() throws Exception {
         Queen queen = new Queen();
-        assertEquals(9, queen.getOccupiedCells(0, 1, board).size());
+        assertEquals(9, queen.isOccupiedCells(0, 1, board));
     }
 }
