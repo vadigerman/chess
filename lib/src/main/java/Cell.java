@@ -34,6 +34,5 @@ public class Cell {
     @Override
     public int hashCode() {
         return (this.getX() * 10 + this.getY());
-//        return (((this.getX() & 0xFFFF) << 16) & (this.getY() & 0xFFFF));
     }
 }
