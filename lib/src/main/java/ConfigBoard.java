@@ -2,6 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigBoard {
+    public static final String QUEEN = "queen";
+    public static final String ROOK = "rook";
+    public static final String BISHOP = "bishop";
+    public static final String KING = "king";
+    public static final String KNIGHT = "knight";
+    public static final String PAWN = "pawn";
+
     int sizeBoard;
     List<Piece> listPieces = new ArrayList<>();
     int repetitiveCombinations = 1;

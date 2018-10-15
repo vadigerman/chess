@@ -1,23 +1,28 @@
 public class PieceFactory {
     public Piece getPiece(String pieceName) {
-        Piece piece = new Piece();
+        Piece piece = new Piece() {
+            @Override
+            protected void calculateOccupiedCells(int x, int y, Board board) {
+
+            }
+        };
         switch (pieceName) {
-            case "queen":
+            case ConfigBoard.QUEEN:
                 piece = new Queen();
                 break;
-            case "rook":
+            case ConfigBoard.ROOK:
                 piece = new Rook();
                 break;
-            case "bishop":
+            case ConfigBoard.BISHOP:
                 piece = new Bishop();
                 break;
-            case "king":
+            case ConfigBoard.KING:
                 piece = new King();
                 break;
-            case "knight":
+            case ConfigBoard.KNIGHT:
                 piece = new Knight();
                 break;
-            case "pawn":
+            case ConfigBoard.PAWN:
                 piece = new Pawn();
                 break;
         }

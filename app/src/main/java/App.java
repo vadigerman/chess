@@ -31,7 +31,7 @@ public class App {
     public static List<String> getAllPieces () {
         List<String> piecesArr = new ArrayList<String>();
         System.out.println("enter listPieces");
-        String[] pieces = {"queen", "rook", "bishop", "king", "knight", "pawn"};
+        String[] pieces = {ConfigBoard.QUEEN, ConfigBoard.ROOK, ConfigBoard.BISHOP, ConfigBoard.KING, ConfigBoard.KNIGHT, ConfigBoard.PAWN};
         for (String piece : pieces) {
             int n = getCountOnePiece(piece);
             while (n > 0) {

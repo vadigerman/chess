@@ -2,23 +2,31 @@ import java.util.List;
 
 public class Pawn extends Piece {
     public Pawn() {
-        setName("pawn");
-        setOnBoard(false);
+        setName(ConfigBoard.PAWN);
+//        setOnBoard(false);
     }
 
-    public boolean isOccupiedCells(int x, int y, Board board) {
+    @Override
+    protected void calculateOccupiedCells(int x, int y, Board board) {
+        clearOccupiedCells();
         Cell cell = new Cell(-1, -1);
-        getOccupiedCells().clear();
-        cell.setX(x - 1);
-        cell.setY(y + 1);
-        if (!checkCell(board, cell)) {
-            return false;
-        }
-        cell.setX(x + 1);
-        cell.setY(y + 1);
-        if (!checkCell(board, cell)) {
-            return false;
-        }
-        return true;
+        addOccupiedCells(cell, x - 1, y + 1, board);
+        addOccupiedCells(cell, x + 1, y + 1, board);
     }
+
+//    public boolean isOccupiedCells(int x, int y, Board board) {
+//        Cell cell = new Cell(-1, -1);
+//        getOccupiedCells().clear();
+//        cell.setX(x - 1);
+//        cell.setY(y + 1);
+//        if (!checkCell(board, cell)) {
+//            return false;
+//        }
+//        cell.setX(x + 1);
+//        cell.setY(y + 1);
+//        if (!checkCell(board, cell)) {
+//            return false;
+//        }
+//        return true;
+//    }
 }

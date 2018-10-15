@@ -9,6 +9,6 @@ public class KingTest {
     @Test
     public void getOccupiedCells() throws Exception {
         King king = new King();
-        assertEquals(8, king.isOccupiedCells(1, 1, board));
+        assertEquals(8, king.getOccupiedCells(1, 1, board).size());
     }
 }
