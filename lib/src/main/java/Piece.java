@@ -1,18 +1,13 @@
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 abstract class Piece {
     private String name;
-    private List<Cell> occupiedCells = new ArrayList<>();
-    private List<Cell> closedCells = new ArrayList<>();
-//    private Map<Cell, CellState> usedCells = new HashMap<>();
-//    private List<Cell> listUsedCells = new ArrayList<>();
-//    private boolean onBoard;
+    protected List<Cell> occupiedCells = new ArrayList<>();
 
-    public List<Cell> getClosedCells() {
-        return closedCells;
+    public String getName() {
+        return name;
     }
 
     public void clearOccupiedCells() {
@@ -24,8 +19,12 @@ abstract class Piece {
     }
 
     public List<Cell> getOccupiedCells(int x, int y, Board board) {
-        calculateOccupiedCells(x, y, board);
-        return occupiedCells;
+        return calculateOccupiedCells2(x, y, board);
+        //return occupiedCells;
+    }
+
+    protected List<Cell> calculateOccupiedCells2(int x, int y, Board board) {
+        return Collections.emptyList();
     }
 
     protected abstract void calculateOccupiedCells(int x, int y, Board board);
@@ -43,33 +42,4 @@ abstract class Piece {
     public void setName(String name) {
         this.name = name;
     }
-
-//    public boolean checkCell(Board board, Cell cell) {
-//        if (cell.equals(board.getCells().get(board.getCells().indexOf(cell)))) {
-//            if (board.getEmptyCells().get(cell) == CellState.EMPTY || board.getEmptyCells().get(cell) == CellState.CHECKED) {
-//                getOccupiedCells().add(board.getCells().get(board.getCells().indexOf(cell)));
-//            } else if (board.getBusyCells().get(cell) == CellState.BUSY) {
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
-//    public Map<Cell, CellState> getUsedCells() {
-//        return usedCells;
-//    }
-
-//    public boolean isOnBoard() {
-//        return onBoard;
-//    }
-//
-//    public void setOnBoard(boolean onBoard) {
-//        this.onBoard = onBoard;
-//    }
-
-//    public boolean isOccupiedCells(int x, int y, Board board) {
-//        //List<Cell> cells = new ArrayList<>();
-//        // getOccupiedCellsInt(cells);
-//        return true;
-//    }
 }

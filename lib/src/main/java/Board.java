@@ -1,51 +1,71 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
-public class Board {
+public class Board implements Cloneable {
     private int size;
-    private List<Cell> cells = new ArrayList<>();
+    private List<Cell> cells;
+    private List<Cell> originalCells;
     private List<Cell> busyCells = new ArrayList<>();
     private List<Piece> listPieces;
-//    private Map<Cell, CellState> emptyCells = new HashMap<>();
-//    private Map<Cell, CellState> busyCells = new HashMap<>();
-//    private Stack<Piece> stackPieces = new Stack<>();
+//    private List<Cell> firstPieceCells = new ArrayList<>();
 
-    public Board(Board that) {
-        this.size = that.size;
-        this.cells = that.cells;
-        this.busyCells = that.busyCells;
-        this.listPieces = that.listPieces;
+    public Board(Board original) {
+        this.size = original.size;
+        this.cells = new ArrayList<>(original.cells);
+        this.originalCells = new ArrayList<>(original.originalCells);
+        this.busyCells = new ArrayList<>(original.busyCells);
+        this.listPieces = new ArrayList<>(original.listPieces);
     }
 
     public Board(ConfigBoard config) {
         this.size = config.getSizeBoard();
-        this.cells = createBoard(size);
+        this.cells = createBoard();
+        this.originalCells = new ArrayList<>(this.cells);
         this.listPieces = config.getListPieces();
+//        this.firstPieceCells = createQuarterBoard();
     }
 
-    private List<Cell> createBoard(int n) {
+//    private List<Cell> createQuarterBoard() {
+//        int n = getSize() / 2;
+//        if (n % 2 == 0) {
+//            for(int i = 0; i < n; i++) {
+//                for(int j = 0; j < n; j++) {
+//                    firstPieceCells.add(getCells().get(i * 4 + j));
+//                }
+//            }
+//        }
+//        return firstPieceCells;
+//    }
+
+
+    public List<Cell> getOriginalCells() {
+        return originalCells;
+    }
+
+    private List<Cell> createBoard() {
+        int n = getSize();
         List<Cell> cells = new ArrayList<>();
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
                 Cell cell = new Cell(i, j);
                 cells.add(cell);
-//                emptyCells.put(cell, CellState.EMPTY);
             }
         }
         return cells;
     }
 
     public Cell getFreeCell() {
-//        for (Map.Entry<Cell, CellState> entryCell : emptyCells.entrySet()) {
-//            if (entryCell.getValue() == CellState.EMPTY) {
-//                return entryCell.getKey();
-//            }
-//        }
         if (getCells().size() > 0) {
             return getCells().get(0);
+        } else {
+            return null;
+        }
+    }
+
+    public Cell nextCell(Cell cell) {
+        int i = getCells().indexOf(cell) + 1;
+        if (i < getCells().size()) {
+            return getCells().get(i);
         } else {
             return null;
         }
@@ -69,60 +89,6 @@ public class Board {
 
     public List<Piece> getListPieces() {
         return listPieces;
-    }
-
-//    public Map<Cell, CellState> getBusyCells() {
-//        return busyCells;
-//    }
-
-//    public void updateClosedCells(Piece piece) {
-//        for (Cell cell : piece.getClosedCells()) {
-//            getEmptyCells().remove(cell);
-//            getEmptyCells().put(cell, CellState.CHECKED);
-//        }
-//    }
-
-//    public void updateFreeCells(List<Cell> cellList, Piece piece) {
-////        piece.getUsedCells().clear();
-//        for (Cell cell : cellList) {
-//            emptyCells.remove(cell);
-//            piece.getUsedCells().put(cell, CellState.ATTACKED);
-//        }
-//    }
-
-//    public void removeClosedCells(Piece piece) {
-//        for (Cell cell : piece.getClosedCells()) {
-//            getEmptyCells().put(cell, CellState.EMPTY);
-//        }
-//        for (Map.Entry<Cell, CellState> entryCell : piece.getUsedCells().entrySet()) {
-//            getEmptyCells().put(entryCell.getKey(), CellState.EMPTY);
-//        }
-//    }
-
-//    public void returnLastState(Piece piece) {
-//        for (Map.Entry<Cell, CellState> entryCell : piece.getUsedCells().entrySet()) {
-//            getEmptyCells().remove(entryCell.getKey());
-//            getEmptyCells().put(entryCell.getKey(), CellState.EMPTY);
-//        }
-//        for (Cell cell : piece.getClosedCells()) {
-//            getEmptyCells().remove(cell);
-//            getEmptyCells().put(cell, CellState.EMPTY);
-//        }
-//        piece.getUsedCells().clear();
-//    }
-
-//    public Map<Cell, CellState> getEmptyCells() {
-//        return emptyCells;
-//    }
-
-    public void pushPiece() {
-//        stackPieces.push(listPieces.get(0));
-        listPieces.remove(0);
-    }
-
-    public void popPiece() {
-//        listPieces.add(0, stackPieces.pop());
-        listPieces.get(1).getClosedCells().clear();
     }
 }
 

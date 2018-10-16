@@ -1,9 +1,9 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pawn extends Piece {
     public Pawn() {
         setName(ConfigBoard.PAWN);
-//        setOnBoard(false);
     }
 
     @Override
@@ -14,19 +14,18 @@ public class Pawn extends Piece {
         addOccupiedCells(cell, x + 1, y + 1, board);
     }
 
-//    public boolean isOccupiedCells(int x, int y, Board board) {
-//        Cell cell = new Cell(-1, -1);
-//        getOccupiedCells().clear();
-//        cell.setX(x - 1);
-//        cell.setY(y + 1);
-//        if (!checkCell(board, cell)) {
-//            return false;
-//        }
-//        cell.setX(x + 1);
-//        cell.setY(y + 1);
-//        if (!checkCell(board, cell)) {
-//            return false;
-//        }
-//        return true;
-//    }
+    @Override
+    protected List<Cell> calculateOccupiedCells2(int x, int y, Board board) {
+        List<Cell> result = new ArrayList<>();
+        Cell cell = new Cell(-1, -1);
+        cell.setX(x - 1);
+        cell.setY(y + 1);
+        result.add(board.getOriginalCells().get(board.getOriginalCells().indexOf(cell)));
+//        addOccupiedCells(cell, x - 1, y + 1, board);
+        cell.setX(x + 1);
+        cell.setY(y + 1);
+        result.add(board.getOriginalCells().get(board.getOriginalCells().indexOf(cell)));
+//        addOccupiedCells(cell, x + 1, y + 1, board);
+        return result;
+    }
 }
