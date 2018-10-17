@@ -1,11 +1,6 @@
 public class PieceFactory {
     public Piece getPiece(String pieceName) {
-        Piece piece = new Piece() {
-            @Override
-            protected void calculateOccupiedCells(int x, int y, Board board) {
-
-            }
-        };
+        Piece piece = new Piece();
         switch (pieceName) {
             case ConfigBoard.QUEEN:
                 piece = new Queen();

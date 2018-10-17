@@ -9,9 +9,8 @@ public class ConfigBoard {
     public static final String KNIGHT = "knight";
     public static final String PAWN = "pawn";
 
-    int sizeBoard;
-    List<Piece> listPieces = new ArrayList<>();
-    int repetitiveCombinations = 1;
+    private int sizeBoard;
+    private List<Piece> listPieces = new ArrayList<>();
 
     public ConfigBoard(int sizeBoard, List<String> pieces) {
         this.sizeBoard = sizeBoard;
@@ -19,23 +18,10 @@ public class ConfigBoard {
     }
 
     public void calculateRepetitiveCombinations(List<String> pieces) {
-        int multiplier = 1;
-        String currentPiece = "";
         for (String piece : pieces) {
             PieceFactory pieceFactory = new PieceFactory();
             listPieces.add(pieceFactory.getPiece(piece));
-            if (currentPiece.equals(piece)) {
-                repetitiveCombinations = repetitiveCombinations * multiplier;
-                multiplier++;
-            } else {
-                multiplier = 2;
-            }
-            currentPiece = piece;
         }
-    }
-
-    public int getRepetitiveCombinations() {
-        return repetitiveCombinations;
     }
 
     public List<Piece> getListPieces() {

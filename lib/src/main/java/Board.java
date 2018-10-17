@@ -7,7 +7,6 @@ public class Board implements Cloneable {
     private List<Cell> originalCells;
     private List<Cell> busyCells = new ArrayList<>();
     private List<Piece> listPieces;
-//    private List<Cell> firstPieceCells = new ArrayList<>();
 
     public Board(Board original) {
         this.size = original.size;
@@ -22,21 +21,7 @@ public class Board implements Cloneable {
         this.cells = createBoard();
         this.originalCells = new ArrayList<>(this.cells);
         this.listPieces = config.getListPieces();
-//        this.firstPieceCells = createQuarterBoard();
     }
-
-//    private List<Cell> createQuarterBoard() {
-//        int n = getSize() / 2;
-//        if (n % 2 == 0) {
-//            for(int i = 0; i < n; i++) {
-//                for(int j = 0; j < n; j++) {
-//                    firstPieceCells.add(getCells().get(i * 4 + j));
-//                }
-//            }
-//        }
-//        return firstPieceCells;
-//    }
-
 
     public List<Cell> getOriginalCells() {
         return originalCells;

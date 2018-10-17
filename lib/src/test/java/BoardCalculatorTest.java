@@ -12,7 +12,13 @@ public class BoardCalculatorTest {
     @Test
     public void calculate_5_knights_3_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
-        assertEquals(1, boardCalculator.calculateCombinations(2, Arrays.asList("knight", "knight", "knight", "knight")));
+        assertEquals(2, boardCalculator.calculateCombinations(3, Arrays.asList("knight", "knight", "knight", "knight", "knight")));
+    }
+
+    @Test
+    public void calculate_8_knights_4_boardSize() throws Exception{
+        BoardCalculator boardCalculator = new BoardCalculator();
+        assertEquals(6, boardCalculator.calculateCombinations(4, Arrays.asList("knight", "knight", "knight", "knight", "knight", "knight", "knight", "knight")));
     }
 
     @Test
@@ -46,8 +52,8 @@ public class BoardCalculatorTest {
     }
 
     @Test
-    public void calculate_queen_rook_bishop_king_knight_5_boardSize() throws Exception{
+    public void calculate_2_bishops_2_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
-        assertEquals(3488, boardCalculator.calculateCombinations(5, Arrays.asList("queen", "rook", "bishop", "king", "knight")));
+        assertEquals(6, boardCalculator.calculateCombinations(3, Arrays.asList("rook", "rook", "rook")));
     }
 }

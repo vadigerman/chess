@@ -1,12 +1,20 @@
 import java.util.Objects;
 
-public class Cell {
+public class Cell implements Comparable<Cell> {
     private int x;
     private int y;
 
     public Cell(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    @Override
+    public int compareTo(Cell o) {
+        if (this.getX() == o.getX()) {
+            return this.getY() - o.getY();
+        }
+        return this.getX() - o.getX();
     }
 
     public int getX() {
@@ -32,17 +40,9 @@ public class Cell {
         Cell cell = (Cell) o;
         return x == cell.x && y == cell.y;
     }
-/*
 
     @Override
     public int hashCode() {
-        return (this.getX() * 10 + this.getY());
-    }
-*/
-
-    @Override
-    public int hashCode() {
-
         return Objects.hash(x, y);
     }
 }

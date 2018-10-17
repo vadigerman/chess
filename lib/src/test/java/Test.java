@@ -25,7 +25,7 @@ public class Test {
 
 //        assertEquals(0, cellList.indexOf(cell1));
 
-        assertTrue(cell1.equals(cellList.get(cellList.indexOf(cell3))));
+//        assertTrue(cell1.equals(cellList.get(cellList.indexOf(cell3))));
 //        assertFalse(cell2.equals(cellList.get(cellList.indexOf(cell1))));
 
 //        Set<Cell> set = new HashSet<>();
@@ -33,5 +33,15 @@ public class Test {
 //        set.add(cell2);
 //
 //        assertEquals(2, set.size());
+
+        List<Integer> f = new ArrayList<>();
+        List<Integer> f1 = new ArrayList<>();
+
+        f.add(1);
+
+        f1.add(1);
+        f1.add(2);
+
+        System.out.println(f.containsAll(f1));
     }
 }

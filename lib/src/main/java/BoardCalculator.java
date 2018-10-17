@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -5,49 +6,56 @@ import java.util.Map;
 public class BoardCalculator {
     private long countCombinations;
     private Map<String, Map<Cell, List<Cell>>> cache = new HashMap<>();
+    private Cell[] joe;
 
     public void calculate(Board board) {
-        long startTime = System.nanoTime();
-
         for(Piece p : board.getListPieces()) {
             if(cache.containsKey(p.getName())) {
                 continue;
             }
             Map<Cell, List<Cell>> moves = new HashMap<>();
             for (Cell cell : board.getOriginalCells()) {
-                moves.put(cell, p.calculateOccupiedCells2(cell.getX(), cell.getY(), board));
+                moves.put(cell, p.calculateOccupiedCells(cell.getX(), cell.getY(), board));
             }
             cache.put(p.getName(), moves);
         }
-        long endTime = System.nanoTime();
-        System.out.println("caching time: " + (endTime - startTime) / 1000000);
-
-        process(board, board.getFreeCell(), board.getPiece(0), 0);
+        joe = new Cell[board.getListPieces().size()];
+        process2(board, board.getOriginalCells(), 0);
     }
 
-    public void process(Board board, Cell cell, Piece piece, int level) {
-        while(cell != null) {
-            boolean lastLevel = board.getListPieces().size() == level + 1;
+    public void process2(Board board, List<Cell> cells, int level) {
+        for(Cell cell : cells) {
 
+            if(joe[level] != null && joe[level].compareTo(cell) < 0) {
+                continue;
+            }
+
+            Piece piece = board.getPiece(level);
             List<Cell> pieceMove = cache.get(piece.getName()).get(cell);
-            boolean can = !board.getBusyCells().containsAll(pieceMove);
+
+            boolean can = true;
+            for(Cell c : board.getBusyCells()) {
+                if(pieceMove.contains(c)) {
+                    can = false;
+                }
+            }
+
+            boolean lastLevel = board.getListPieces().size() == level + 1;
             if(can) {
                 if(lastLevel) {
                     countCombinations++;
-                    //cell = board.nextCell(cell);
                 } else {
                     Board currentBoard = new Board(board);
-                    level++;
-
                     currentBoard.getBusyCells().add(cell);
-                    currentBoard.getCells().remove(cell);
-                    currentBoard.getCells().removeAll(pieceMove);
 
-                    process(currentBoard, currentBoard.getFreeCell(), currentBoard.getPiece(level), level);
-                    level--;
+                    List<Cell> _cells = new ArrayList<>(cells);
+                    _cells.removeAll(pieceMove);
+                    if (board.getListPieces().get(level + 1).getName().equals(piece.getName())) {
+                        joe[level + 1] = cell;
+                    }
+                    process2(currentBoard, _cells, level + 1);
                 }
             }
-            cell = board.nextCell(cell);
         }
     }
 
@@ -58,8 +66,7 @@ public class BoardCalculator {
         calculate(board);
         long endTime = System.nanoTime();
         System.out.println("calculate time: " + (endTime - startTime) / 1000000);
-        System.out.println(countCombinations + " " + config.getRepetitiveCombinations());
-        return countCombinations / config.getRepetitiveCombinations();
-        //return countCombinations;
+        System.out.println(countCombinations);
+        return countCombinations;
     }
 }
