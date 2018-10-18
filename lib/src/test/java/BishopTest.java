@@ -10,6 +10,7 @@ public class BishopTest {
     @Test
     public void getOccupiedCells() throws Exception {
         Bishop bishop = new Bishop();
-        assertEquals(5, bishop.getOccupiedCells(1, 1, board).size());
+//        assertEquals(5, bishop.getOccupiedCells(1, 1, board).size());
+        assertEquals(5, bishop.calculateOccupiedCells(1, 1, board).size());
     }
 }

@@ -10,7 +10,11 @@ public class QueenTest {
 
     @Test
     public void getOccupiedCells() throws Exception {
-        Queen queen = new Queen();
-        assertEquals(9, queen.getOccupiedCells(1, 1, board).size());
+//        Queen queen = new Queen();
+        CompoundQueen queen = new CompoundQueen(
+                new Rook(),
+                new Bishop()
+        );
+        assertEquals(9, queen.calculateOccupiedCells(1, 1, board).size());
     }
 }

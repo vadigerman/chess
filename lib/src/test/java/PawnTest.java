@@ -9,6 +9,6 @@ public class PawnTest {
     @Test
     public void getOccupiedCells() throws Exception {
         Pawn pawn = new Pawn();
-        assertEquals(3, pawn.getOccupiedCells(1, 0, board).size());
+        assertEquals(3, pawn.calculateOccupiedCells(1, 0, board).size());
     }
 }

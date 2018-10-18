@@ -9,6 +9,6 @@ public class RookTest {
     @Test
     public void getOccupiedCells() throws Exception {
         Rook rook = new Rook();
-        assertEquals(5, rook.getOccupiedCells(0, 0, board).size());
+        assertEquals(5, rook.calculateOccupiedCells(0, 0, board).size());
     }
 }

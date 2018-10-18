@@ -9,6 +9,6 @@ public class KnightTest {
     @Test
     public void getOccupiedCells() throws Exception {
         Knight knight = new Knight();
-        assertEquals(9, knight.getOccupiedCells(2, 2, board).size());
+        assertEquals(9, knight.calculateOccupiedCells(2, 2, board).size());
     }
 }

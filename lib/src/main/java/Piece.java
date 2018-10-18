@@ -12,10 +12,6 @@ public class Piece {
         this.name = name;
     }
 
-    public List<Cell> getOccupiedCells(int x, int y, Board board) {
-        return calculateOccupiedCells(x, y, board);
-    }
-
     protected List<Cell> calculateOccupiedCells(int x, int y, Board board) {
         return Collections.emptyList();
     }
