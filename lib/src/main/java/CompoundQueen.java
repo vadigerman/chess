@@ -3,15 +3,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CompoundQueen extends Piece {
-    List<Piece> children = new ArrayList<>();
+    private List<Piece> children = new ArrayList<>();
 
-    public CompoundQueen(Piece... components) {
+    public CompoundQueen(Rook rook, Bishop bishop) {
         setName(ConfigBoard.QUEEN);
-        add(components);
-    }
-
-    public void add(Piece... components) {
-        children.addAll(Arrays.asList(components));
+        children.add(rook);
+        children.add(bishop);
     }
 
     protected List<Cell> calculateOccupiedCells(int x, int y, Board board) {

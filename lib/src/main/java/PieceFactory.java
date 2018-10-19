@@ -3,10 +3,7 @@ public class PieceFactory {
         Piece piece = new Piece();
         switch (pieceName) {
             case ConfigBoard.QUEEN:
-                piece = new CompoundQueen(
-                        new Rook(),
-                        new Bishop()
-                );
+                piece = new CompoundQueen(new Rook(), new Bishop());
                 break;
             case ConfigBoard.ROOK:
                 piece = new Rook();
