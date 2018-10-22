@@ -8,6 +8,12 @@ public class BoardCalculator {
     private Map<String, Map<Cell, List<Cell>>> cachePiecesOccupiedCells = new HashMap<>();
     private Cell[] arrayCells;
 
+    private List<CalculationListener> listeners = new ArrayList<>();
+
+    public void addListener(CalculationListener listener) {
+        this.listeners.add(listener);
+    }
+
     private void createCachePiecesOccupiedCells(Board board) {
         for (Piece piece : board.getListPieces()) {
             if (cachePiecesOccupiedCells.containsKey(piece.getName())) {
@@ -25,6 +31,9 @@ public class BoardCalculator {
         if (canPieceOnBoard) {
             if (board.getListPieces().size() == level + 1) {
                 countCombinations++;
+                for(CalculationListener listener : listeners) {
+                    listener.onCombinationOccurrence(null, countCombinations);
+                }
             } else {
                 Board currentBoard = new Board(board);
                 currentBoard.getBusyCells().add(cell);
@@ -68,7 +77,11 @@ public class BoardCalculator {
         calculate(board);
         long endTime = System.nanoTime();
         System.out.println("calculate time: " + (endTime - startTime) / 1000000);
-//        System.out.println(countCombinations);
+
+        for(CalculationListener listener : listeners) {
+            listener.onCalculationCompletion((endTime - startTime) / 1000000, countCombinations);
+        }
+
         return countCombinations;
     }
 }

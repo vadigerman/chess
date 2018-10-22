@@ -1,6 +1,7 @@
 import org.junit.Test;
 import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class BoardCalculatorTest {
     @Test
@@ -42,7 +43,11 @@ public class BoardCalculatorTest {
     @Test
     public void calculate_8_queens_8_boardSize() throws Exception{
         BoardCalculator boardCalculator = new BoardCalculator();
-        assertEquals(92, boardCalculator.calculateCombinations(8, Arrays.asList("queen", "queen", "queen", "queen", "queen", "queen", "queen", "queen")));
+        TestCalculationListener listener = new TestCalculationListener();
+        boardCalculator.addListener(listener);
+        boardCalculator.calculateCombinations(8, Arrays.asList("queen", "queen", "queen", "queen", "queen", "queen", "queen", "queen"));
+        assertEquals(92, listener.getCombCnt());
+        assertTrue(listener.getExecTime() < 1000);
     }
 
     @Test

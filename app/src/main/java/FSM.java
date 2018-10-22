@@ -1,13 +1,28 @@
-import java.util.ArrayList;
-import java.util.List;
+    import java.util.ArrayList;
+    import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
 public class FSM {
-    ResourceBundle myBundle = ResourceBundle.getBundle("Labels");
+    private List<String> listPieces = new ArrayList<String>();
+    private int boardSize;
     private Scanner scanner = new Scanner(System.in);
+    ResourceBundle myBundle = ResourceBundle.getBundle("Labels");
+
+    public FSM() {
+        boardSize = calcBoardSize();
+        listPieces = calcConfigPieces();
+    }
+
+    public List<String> getListPieces() {
+        return listPieces;
+    }
+
+    public int getBoardSize() {
+        return boardSize;
+    }
 
     private Set<String> createSetPieces() {
         Set<String> pieces = new TreeSet<String>();
@@ -20,7 +35,7 @@ public class FSM {
         return pieces;
     }
 
-    public int getBoardSize() {
+    private int calcBoardSize() {
         int boardSize = question0();
         while (boardSize <= 0) {
             boardSize = question0();
@@ -28,8 +43,7 @@ public class FSM {
         return boardSize;
     }
 
-    public List<String> getConfigPieces() {
-        List<String> listPieces = new ArrayList<String>();
+    private List<String> calcConfigPieces() {
         String finalAnswer = myBundle.getString("final_answer");
         Set<String> pieces = createSetPieces();
         while (finalAnswer.equals(myBundle.getString("final_answer"))) {
@@ -47,6 +61,17 @@ public class FSM {
             finalAnswer = question3();
         }
         return listPieces;
+    }
+
+    public String getBoardConfig() {
+        String listConfig = myBundle.getString("size") + " " + String.valueOf(getBoardSize());
+        for (String piece : getListPieces()) {
+            if (piece.equals("knight")) {
+                listConfig += "N";
+            }
+            listConfig += piece.charAt(0);
+        }
+        return listConfig;
     }
 
     private int question0() {
