@@ -1,10 +1,16 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class TestCalculationListener implements CalculationListener {
     private long execTime;
     private long combCnt;
 
+    Set<String> paths = new HashSet<>();
+
     @Override
     public void onCombinationOccurrence(String path, long cNum) {
         System.out.println(String.format("iteration %s, %d", path, cNum));
+        paths.add(path);
     }
 
     @Override
@@ -19,5 +25,9 @@ public class TestCalculationListener implements CalculationListener {
 
     public long getCombCnt() {
         return combCnt;
+    }
+
+    public Set<String> getPaths() {
+        return paths;
     }
 }

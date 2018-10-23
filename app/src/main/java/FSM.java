@@ -63,17 +63,6 @@ public class FSM {
         return listPieces;
     }
 
-    public String getBoardConfig() {
-        String listConfig = myBundle.getString("size") + " " + String.valueOf(getBoardSize());
-        for (String piece : getListPieces()) {
-            if (piece.equals("knight")) {
-                listConfig += "N";
-            }
-            listConfig += piece.charAt(0);
-        }
-        return listConfig;
-    }
-
     private int question0() {
         System.out.println(myBundle.getString("chessboard_size"));
         return scanner.nextInt();

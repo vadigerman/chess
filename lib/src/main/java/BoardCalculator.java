@@ -14,6 +14,41 @@ public class BoardCalculator {
         this.listeners.add(listener);
     }
 
+    private String getPieceFirstChar(Board board, int i) {
+        String piece = board.getPiece(i).getName();
+        if (piece.equals(ConfigBoard.KNIGHT)) {
+            return "N";
+        }
+        return String.valueOf(piece.toUpperCase().charAt(0));
+    }
+
+    private String createPath(Board board, Cell currentCell) {
+        String path = "";
+        String str = "";
+        String currentChar = "";
+        int count = 1;
+        for (int i = 0; i < board.getBusyCells().size(); i++) {
+            str = getPieceFirstChar(board, i);
+            Cell cell = board.getBusyCells().get(i);
+            if (str.equals(currentChar)) {
+                count++;
+            } else {
+                count = 1;
+            }
+            currentChar = str;
+            str += Integer.toString(count);
+            path += str + Integer.toString(cell.getX()) + Integer.toString(cell.getY()) + ":";
+        }
+        str = getPieceFirstChar(board, board.getListPieces().size() - 1);
+        if (str.equals(currentChar)) {
+            str += Integer.toString(count + 1);
+        } else {
+            str += Integer.toString(1);
+        }
+        path += str + Integer.toString(currentCell.getX()) + Integer.toString(currentCell.getY()) + "-";
+        return path;
+    }
+
     private void createCachePiecesOccupiedCells(Board board) {
         for (Piece piece : board.getListPieces()) {
             if (cachePiecesOccupiedCells.containsKey(piece.getName())) {
@@ -32,7 +67,7 @@ public class BoardCalculator {
             if (board.getListPieces().size() == level + 1) {
                 countCombinations++;
                 for(CalculationListener listener : listeners) {
-                    listener.onCombinationOccurrence(null, countCombinations);
+                    listener.onCombinationOccurrence(createPath(board, cell), countCombinations);
                 }
             } else {
                 Board currentBoard = new Board(board);
@@ -60,7 +95,6 @@ public class BoardCalculator {
                     canPieceOnBoard = false;
                 }
             }
-
             putPieceOnBoard(canPieceOnBoard, board, cells, cell, level, pieceMove, pieceName);
         }
     }
@@ -77,11 +111,9 @@ public class BoardCalculator {
         calculate(board);
         long endTime = System.nanoTime();
         System.out.println("calculate time: " + (endTime - startTime) / 1000000);
-
-        for(CalculationListener listener : listeners) {
+        for (CalculationListener listener : listeners) {
             listener.onCalculationCompletion((endTime - startTime) / 1000000, countCombinations);
         }
-
         return countCombinations;
     }
 }
