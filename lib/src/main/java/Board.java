@@ -1,11 +1,14 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Board implements Cloneable {
     private int size;
     private List<Cell> cells;
     private List<Cell> originalCells;
     private List<Cell> busyCells = new ArrayList<>();
+    private Map<Cell, String> copyBusyCells = new HashMap<>();
     private List<Piece> listPieces;
 
     public Board(Board original) {
@@ -13,6 +16,7 @@ public class Board implements Cloneable {
         this.cells = new ArrayList<>(original.cells);
         this.originalCells = new ArrayList<>(original.originalCells);
         this.busyCells = new ArrayList<>(original.busyCells);
+        this.copyBusyCells = new HashMap<>(original.copyBusyCells);
         this.listPieces = new ArrayList<>(original.listPieces);
     }
 
@@ -62,6 +66,10 @@ public class Board implements Cloneable {
 
     public List<Cell> getBusyCells() {
         return busyCells;
+    }
+
+    public Map<Cell, String> getCopyBusyCells() {
+        return copyBusyCells;
     }
 
     public int getSize() {

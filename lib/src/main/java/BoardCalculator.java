@@ -7,7 +7,6 @@ public class BoardCalculator {
     private long countCombinations;
     private Map<String, Map<Cell, List<Cell>>> cachePiecesOccupiedCells = new HashMap<>();
     private Cell[] arrayCells;
-
     private List<CalculationListener> listeners = new ArrayList<>();
 
     public void addListener(CalculationListener listener) {
@@ -15,15 +14,11 @@ public class BoardCalculator {
     }
 
     private String getPieceFirstChar(Board board, int i) {
-        String piece = board.getPiece(i).getName();
-        if (piece.equals(ConfigBoard.KNIGHT)) {
-            return "N";
-        }
-        return String.valueOf(piece.toUpperCase().charAt(0));
+        return board.getPiece(i).getName();
     }
 
     private String createPath(Board board, Cell currentCell) {
-        String path = "";
+        StringBuilder sb = new StringBuilder();
         String str = "";
         String currentChar = "";
         int count = 1;
@@ -37,7 +32,7 @@ public class BoardCalculator {
             }
             currentChar = str;
             str += Integer.toString(count);
-            path += str + Integer.toString(cell.getX()) + Integer.toString(cell.getY()) + ":";
+            sb.append(str).append(Integer.toString(cell.getX())).append(Integer.toString(cell.getY())).append(":");
         }
         str = getPieceFirstChar(board, board.getListPieces().size() - 1);
         if (str.equals(currentChar)) {
@@ -45,8 +40,8 @@ public class BoardCalculator {
         } else {
             str += Integer.toString(1);
         }
-        path += str + Integer.toString(currentCell.getX()) + Integer.toString(currentCell.getY()) + "-";
-        return path;
+        sb.append(str).append(Integer.toString(currentCell.getX())).append(Integer.toString(currentCell.getY())).append(",");
+        return sb.toString();
     }
 
     private void createCachePiecesOccupiedCells(Board board) {
@@ -62,23 +57,28 @@ public class BoardCalculator {
         }
     }
 
-    private void putPieceOnBoard(boolean canPieceOnBoard, Board board, List<Cell> cells, Cell cell, int level, List<Cell> pieceMove, String pieceName) {
-        if (canPieceOnBoard) {
-            if (board.getListPieces().size() == level + 1) {
-                countCombinations++;
-                for(CalculationListener listener : listeners) {
-                    listener.onCombinationOccurrence(createPath(board, cell), countCombinations);
-                }
-            } else {
-                Board currentBoard = new Board(board);
-                currentBoard.getBusyCells().add(cell);
-                List<Cell> _cells = new ArrayList<>(cells);
-                _cells.removeAll(pieceMove);
-                if (board.getListPieces().get(level + 1).getName().equals(pieceName)) {
-                    arrayCells[level + 1] = cell;
-                }
-                process(currentBoard, _cells, level + 1);
+    private void putPieceOnBoard(Board board, List<Cell> cells, Cell cell, int level, List<Cell> pieceMove, String pieceName) {
+        if (board.getListPieces().size() == level + 1) {
+            countCombinations++;
+            StringBuilder sb = new StringBuilder();
+            Map<Cell, String> mapPath = board.getCopyBusyCells();
+            for (Map.Entry<Cell, String> mapEntryPath : mapPath.entrySet()) {
+                sb.append(mapEntryPath.getValue()).append(mapEntryPath.getKey().getX()).append(mapEntryPath.getKey().getY()).append(":");
             }
+            sb.append(pieceName).append(cell.getX()).append(cell.getY()).append(",");
+            for(CalculationListener listener : listeners) {
+                listener.onCombinationOccurrence(sb.toString(), countCombinations);
+            }
+        } else {
+            Board currentBoard = new Board(board);
+            currentBoard.getBusyCells().add(cell);
+            currentBoard.getCopyBusyCells().put(cell, pieceName);
+            List<Cell> _cells = new ArrayList<>(cells);
+            _cells.removeAll(pieceMove);
+            if (board.getListPieces().get(level + 1).getName().equals(pieceName)) {
+                arrayCells[level + 1] = cell;
+            }
+            process(currentBoard, _cells, level + 1);
         }
     }
 
@@ -95,7 +95,9 @@ public class BoardCalculator {
                     canPieceOnBoard = false;
                 }
             }
-            putPieceOnBoard(canPieceOnBoard, board, cells, cell, level, pieceMove, pieceName);
+            if (canPieceOnBoard) {
+                putPieceOnBoard(board, cells, cell, level, pieceMove, pieceName);
+            }
         }
     }
 
