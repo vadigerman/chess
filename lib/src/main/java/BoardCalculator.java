@@ -13,37 +13,6 @@ public class BoardCalculator {
         this.listeners.add(listener);
     }
 
-    private String getPieceFirstChar(Board board, int i) {
-        return board.getPiece(i).getName();
-    }
-
-    private String createPath(Board board, Cell currentCell) {
-        StringBuilder sb = new StringBuilder();
-        String str = "";
-        String currentChar = "";
-        int count = 1;
-        for (int i = 0; i < board.getBusyCells().size(); i++) {
-            str = getPieceFirstChar(board, i);
-            Cell cell = board.getBusyCells().get(i);
-            if (str.equals(currentChar)) {
-                count++;
-            } else {
-                count = 1;
-            }
-            currentChar = str;
-            str += Integer.toString(count);
-            sb.append(str).append(Integer.toString(cell.getX())).append(Integer.toString(cell.getY())).append(":");
-        }
-        str = getPieceFirstChar(board, board.getListPieces().size() - 1);
-        if (str.equals(currentChar)) {
-            str += Integer.toString(count + 1);
-        } else {
-            str += Integer.toString(1);
-        }
-        sb.append(str).append(Integer.toString(currentCell.getX())).append(Integer.toString(currentCell.getY())).append(",");
-        return sb.toString();
-    }
-
     private void createCachePiecesOccupiedCells(Board board) {
         for (Piece piece : board.getListPieces()) {
             if (cachePiecesOccupiedCells.containsKey(piece.getName())) {
@@ -65,7 +34,7 @@ public class BoardCalculator {
             for (Map.Entry<Cell, String> mapEntryPath : mapPath.entrySet()) {
                 sb.append(mapEntryPath.getValue()).append(mapEntryPath.getKey().getX()).append(mapEntryPath.getKey().getY()).append(":");
             }
-            sb.append(pieceName).append(cell.getX()).append(cell.getY()).append(",");
+            sb.append(pieceName).append(cell.getX()).append(cell.getY());
             for(CalculationListener listener : listeners) {
                 listener.onCombinationOccurrence(sb.toString(), countCombinations);
             }
