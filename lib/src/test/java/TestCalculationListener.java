@@ -8,6 +8,9 @@ public class TestCalculationListener implements CalculationListener {
     Set<String> paths = new HashSet<>();
 
     @Override
+    public void onCalculationCommencement() { }
+
+    @Override
     public void onCombinationOccurrence(String path, long cNum) {
         System.out.println(String.format("iteration %s, %d", path, cNum));
         paths.add(path);

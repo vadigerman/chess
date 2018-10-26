@@ -79,6 +79,9 @@ public class BoardCalculator {
     public long calculateCombinations(int boardLength, List<String> listPieces) {
         Board board = new Board(new ConfigBoard(boardLength, listPieces));
         long startTime = System.nanoTime();
+        for (CalculationListener listener : listeners) {
+            listener.onCalculationCommencement();
+        }
         calculate(board);
         long endTime = System.nanoTime();
         System.out.println("calculate time: " + (endTime - startTime) / 1000000);

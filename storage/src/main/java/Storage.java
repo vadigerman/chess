@@ -1,4 +1,7 @@
+import java.util.List;
+
 public interface Storage {
-    void saveTime(long execTime, long combCnt);
-    void savePath(String str, long number);
+    long registerExecution();
+    void updateExecution(long execId, long execTime, long combCnt);
+    void savePath(List<Object[]> paths);
 }

@@ -1,18 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static void main (String[] args) {
         FSM fsm = new FSM();
         BoardCalculator calculator = new BoardCalculator();
-//        final Storage fileStorage = new FileStorage();
         final Storage dbStorage = new DBStorage();
 
         CalculationListener listener = new CalculationListener() {
-            public void onCalculationCompletion(long execTime, long combCnt) {
-                dbStorage.saveTime(execTime, combCnt);
+            private long executionId;
+            private List<Object[]> paths = new ArrayList<Object[]>();
+
+            public void onCalculationCommencement() {
+                executionId = dbStorage.registerExecution();
             }
 
             public void onCombinationOccurrence(String path, long cNum) {
-//                fileStorage.savePath(path, cNum);
-                dbStorage.savePath(path, cNum);
+                paths.add(new Object[] {executionId, path, cNum});
+                if (paths.size() >= 5) {
+                    dbStorage.savePath(paths);
+                }
+                paths.clear();
+            }
+
+            public void onCalculationCompletion(long execTime, long combCnt) {
+                System.out.println(combCnt);
+                dbStorage.updateExecution(executionId, execTime, combCnt);
             }
         };
         calculator.addListener(listener);

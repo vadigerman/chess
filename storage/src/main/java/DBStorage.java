@@ -1,38 +1,98 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class DBStorage implements Storage {
-    Connection con = null;
-    Statement stmt = null;
-    int result = 0;
-    Connection con2 = null;
-    Statement stmt2 = null;
-    int result2 = 0;
-    int count = 1;
-
     @Override
-    public void savePath(String str, long number) {
+    public long registerExecution() {
+        Connection con;
+        Statement stmt;
+        ResultSet rs;
+        int result;
+
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
             stmt = con.createStatement();
-            result = stmt.executeUpdate("INSERT INTO exec_combinations VALUES ("+count+", '"+str+"', "+number+")");
-            con.commit();
+            result = stmt.executeUpdate("INSERT INTO calculate_execution (execution_time, execution_result) VALUES (NULL, NULL)");
+            rs = stmt.executeQuery("SELECT execution_id FROM calculate_execution WHERE execution_time IS NULL");
+            if (rs.next()) {
+                System.out.println(rs.getLong("execution_id"));
+                return rs.getLong("execution_id");
+            }
         } catch (Exception e) {
-            e.printStackTrace(System.out);
+            //
+        }
+        return 0;
+    }
+
+    @Override
+    public void savePath(List<Object[]> paths) {
+        System.out.println("test");
+        Connection con = null;
+        PreparedStatement statement = null;
+        try {
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+            con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
+            con.setAutoCommit(false);
+            statement = con.prepareStatement("INSERT INTO exec_combinations VALUES (?, ?, ?)");
+            System.out.println("test-3");
+            for (Object[] path : paths) {
+                System.out.println(path);
+                statement.setLong(1, (Long) path[0]);
+                statement.setString(2, (String) path[1]);
+                statement.setLong(3, (Long) path[2]);
+                statement.addBatch();
+            }
+            statement.executeBatch();
+            con.commit();
+        } catch (SQLException e) {
+            if (con != null) {
+                try {
+                    con.rollback();
+                } catch (SQLException e1) {
+                    //
+                }
+            }
+        } catch(ClassNotFoundException e) {
+            System.err.println(e);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    //
+                }
+            }
+            if (con != null) {
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    //
+                }
+            }
         }
     }
 
     @Override
-    public void saveTime(long execTime, long combCnt) {
+    public void updateExecution(long execId, long execTime, long combCnt) {
+        System.out.println("test-2");
+        Connection con = null;
+        PreparedStatement statement = null;
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            con2 = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
-            stmt2 = con2.createStatement();
-            result2 = stmt2.executeUpdate("INSERT INTO calculate_execution VALUES ("+count+", "+execTime+", "+combCnt+")");
-            count++;
-            con2.commit();
+            con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
+            con.setAutoCommit(false);
+            statement = con.prepareStatement("UPDATE calculate_execution SET execution_time = ? AND execution_result = ? WHERE execution_id = ?");
+            statement.setLong(1, execTime);
+            statement.setLong(2, combCnt);
+            statement.setLong(3, execId);
+            statement.executeUpdate();
+            con.commit();
         } catch (Exception e) {
             e.printStackTrace(System.out);
         }
