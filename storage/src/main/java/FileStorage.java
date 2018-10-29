@@ -10,7 +10,7 @@ public class FileStorage implements Storage {
     public void updateExecution(long execId, long execTime, long combCnt) { }
 
     @Override
-    public void savePath(List<Object[]> paths) {
+    public void savePath(List<PiecePaths> paths) {
 //        str += Long.toString(number);
 //        try (FileWriter writer = new FileWriter("file.csv", true))
 //        {

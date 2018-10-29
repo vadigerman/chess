@@ -39,12 +39,15 @@ public class ConnectDatabase {
 //                    "execution_result INT" +
 //                    ");");
 
+            result = stmt.executeUpdate("DELETE FROM calculate_execution WHERE execution_id = 1");
+
 //            result = stmt.executeUpdate("CREATE TABLE exec_combinations (" +
 //                    "execution_id INT NOT NULL, " +
 //                    "combination_path VARCHAR(100) NOT NULL, " +
 //                    "combination_number INT NOT NULL" +
 //                    ", FOREIGN KEY (execution_id) REFERENCES calculate_execution (execution_id)" +
 //                    ");");
+
 
             con.commit();
         } catch (Exception e) {

@@ -9,23 +9,23 @@ public class Main {
 
         CalculationListener listener = new CalculationListener() {
             private long executionId;
-            private List<Object[]> paths = new ArrayList<Object[]>();
+            private List<PiecePaths> piecePaths = new ArrayList<PiecePaths>();
 
             public void onCalculationCommencement() {
                 executionId = dbStorage.registerExecution();
             }
 
             public void onCombinationOccurrence(String path, long cNum) {
-                paths.add(new Object[] {executionId, path, cNum});
-                if (paths.size() >= 5) {
-                    dbStorage.savePath(paths);
+                piecePaths.add(new PiecePaths(executionId, path, cNum));
+                if (piecePaths.size() >= 5) {
+                    dbStorage.savePath(piecePaths);
+                    piecePaths.clear();
                 }
-                paths.clear();
             }
 
             public void onCalculationCompletion(long execTime, long combCnt) {
-                System.out.println(combCnt);
                 dbStorage.updateExecution(executionId, execTime, combCnt);
+                dbStorage.savePath(piecePaths);
             }
         };
         calculator.addListener(listener);

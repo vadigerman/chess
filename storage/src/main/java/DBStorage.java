@@ -21,7 +21,6 @@ public class DBStorage implements Storage {
             result = stmt.executeUpdate("INSERT INTO calculate_execution (execution_time, execution_result) VALUES (NULL, NULL)");
             rs = stmt.executeQuery("SELECT execution_id FROM calculate_execution WHERE execution_time IS NULL");
             if (rs.next()) {
-                System.out.println(rs.getLong("execution_id"));
                 return rs.getLong("execution_id");
             }
         } catch (Exception e) {
@@ -31,8 +30,7 @@ public class DBStorage implements Storage {
     }
 
     @Override
-    public void savePath(List<Object[]> paths) {
-        System.out.println("test");
+    public void savePath(List<PiecePaths> paths) {
         Connection con = null;
         PreparedStatement statement = null;
         try {
@@ -40,12 +38,10 @@ public class DBStorage implements Storage {
             con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
             con.setAutoCommit(false);
             statement = con.prepareStatement("INSERT INTO exec_combinations VALUES (?, ?, ?)");
-            System.out.println("test-3");
-            for (Object[] path : paths) {
-                System.out.println(path);
-                statement.setLong(1, (Long) path[0]);
-                statement.setString(2, (String) path[1]);
-                statement.setLong(3, (Long) path[2]);
+            for (PiecePaths path : paths) {
+                statement.setLong(1, path.getExecutionId());
+                statement.setString(2, path.getPath());
+                statement.setLong(3, path.getcNum());
                 statement.addBatch();
             }
             statement.executeBatch();
@@ -80,14 +76,13 @@ public class DBStorage implements Storage {
 
     @Override
     public void updateExecution(long execId, long execTime, long combCnt) {
-        System.out.println("test-2");
         Connection con = null;
         PreparedStatement statement = null;
         try {
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
             con = DriverManager.getConnection("jdbc:hsqldb:hsql://localhost/testdb", "SA", "");
             con.setAutoCommit(false);
-            statement = con.prepareStatement("UPDATE calculate_execution SET execution_time = ? AND execution_result = ? WHERE execution_id = ?");
+            statement = con.prepareStatement("UPDATE calculate_execution SET execution_time = ?, execution_result = ? WHERE execution_id = ?");
             statement.setLong(1, execTime);
             statement.setLong(2, combCnt);
             statement.setLong(3, execId);
